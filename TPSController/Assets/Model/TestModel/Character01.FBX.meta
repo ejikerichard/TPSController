@@ -1,0 +1,387 @@
+fileFormatVersion: 2
+guid: e52e16c1195be7d44a2fdf8328a3a683
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Ch01
+    100002: Ch01 Footsteps
+    100004: Ch01 Head
+    100006: Ch01 HeadNub
+    100008: Ch01 Jaw
+    100010: Ch01 JawNub
+    100012: Ch01 L Calf
+    100014: Ch01 L Clavicle
+    100016: Ch01 L Finger0
+    100018: Ch01 L Finger01
+    100020: Ch01 L Finger02
+    100022: Ch01 L Finger0Nub
+    100024: Ch01 L Finger1
+    100026: Ch01 L Finger11
+    100028: Ch01 L Finger12
+    100030: Ch01 L Finger1Nub
+    100032: Ch01 L Finger2
+    100034: Ch01 L Finger21
+    100036: Ch01 L Finger22
+    100038: Ch01 L Finger2Nub
+    100040: Ch01 L Finger3
+    100042: Ch01 L Finger31
+    100044: Ch01 L Finger32
+    100046: Ch01 L Finger3Nub
+    100048: Ch01 L Finger4
+    100050: Ch01 L Finger41
+    100052: Ch01 L Finger42
+    100054: Ch01 L Finger4Nub
+    100056: Ch01 L Foot
+    100058: Ch01 L Forearm
+    100060: Ch01 L ForeTwist
+    100062: Ch01 L ForeTwist1
+    100064: Ch01 L Hand
+    100066: Ch01 L Thigh
+    100068: Ch01 L Toe0
+    100070: Ch01 L Toe0Nub
+    100072: Ch01 L UpperArm
+    100074: Ch01 L_eyebrow0
+    100076: Ch01 L_eyebrow0Nub
+    100078: Ch01 L_eyebrow1
+    100080: Ch01 L_eyebrow1Nub
+    100082: Ch01 L_eyebrow2
+    100084: Ch01 L_eyebrow2Nub
+    100086: Ch01 L_eyelid
+    100088: Ch01 L_eyelidNub
+    100090: Ch01 L_middle
+    100092: Ch01 L_middleNub
+    100094: Ch01 M_down0
+    100096: Ch01 M_down0Nub
+    100098: Ch01 M_down1
+    100100: Ch01 M_down1Nub
+    100102: Ch01 M_down2
+    100104: Ch01 M_down2Nub
+    100106: Ch01 M_m0
+    100108: Ch01 M_m0Nub
+    100110: Ch01 M_m1
+    100112: Ch01 M_m1Nub
+    100114: Ch01 M_up0
+    100116: Ch01 M_up0Nub
+    100118: Ch01 M_up1
+    100120: Ch01 M_up1Nub
+    100122: Ch01 M_up2
+    100124: Ch01 M_up2Nub
+    100126: Ch01 Neck
+    100128: Ch01 Pelvis
+    100130: Ch01 R Calf
+    100132: Ch01 R Clavicle
+    100134: Ch01 R Finger0
+    100136: Ch01 R Finger01
+    100138: Ch01 R Finger02
+    100140: Ch01 R Finger0Nub
+    100142: Ch01 R Finger1
+    100144: Ch01 R Finger11
+    100146: Ch01 R Finger12
+    100148: Ch01 R Finger1Nub
+    100150: Ch01 R Finger2
+    100152: Ch01 R Finger21
+    100154: Ch01 R Finger22
+    100156: Ch01 R Finger2Nub
+    100158: Ch01 R Finger3
+    100160: Ch01 R Finger31
+    100162: Ch01 R Finger32
+    100164: Ch01 R Finger3Nub
+    100166: Ch01 R Finger4
+    100168: Ch01 R Finger41
+    100170: Ch01 R Finger42
+    100172: Ch01 R Finger4Nub
+    100174: Ch01 R Foot
+    100176: Ch01 R Forearm
+    100178: Ch01 R ForeTwist
+    100180: Ch01 R ForeTwist1
+    100182: Ch01 R Hand
+    100184: Ch01 R Thigh
+    100186: Ch01 R Toe0
+    100188: Ch01 R Toe0Nub
+    100190: Ch01 R UpperArm
+    100192: Ch01 R_eyebrow0
+    100194: Ch01 R_eyebrow0Nub
+    100196: Ch01 R_eyebrow1
+    100198: Ch01 R_eyebrow1Nub
+    100200: Ch01 R_eyebrow2
+    100202: Ch01 R_eyebrow2Nub
+    100204: Ch01 R_eyelid
+    100206: Ch01 R_eyelidNub
+    100208: Ch01 R_middle
+    100210: Ch01 R_middleNub
+    100212: Ch01 Spine
+    100214: Ch01 Spine1
+    100216: Ch01 Spine2
+    100218: //RootNode
+    100220: Eyes
+    100222: Head
+    100224: Inside_mounth
+    100226: Jacket
+    100228: Left_Hand
+    100230: Legs
+    100232: LTeeth
+    100234: M4A1_Body
+    100236: M4A1_Iron_Sight
+    100238: M4A1_Lhand
+    100240: M4A1_Magazine
+    100242: M4A1_Rhand
+    100244: Right_Hand
+    100246: Tongue
+    100248: Tshirt
+    100250: UTeeth
+    100252: Weapons
+    400000: Ch01
+    400002: Ch01 Footsteps
+    400004: Ch01 Head
+    400006: Ch01 HeadNub
+    400008: Ch01 Jaw
+    400010: Ch01 JawNub
+    400012: Ch01 L Calf
+    400014: Ch01 L Clavicle
+    400016: Ch01 L Finger0
+    400018: Ch01 L Finger01
+    400020: Ch01 L Finger02
+    400022: Ch01 L Finger0Nub
+    400024: Ch01 L Finger1
+    400026: Ch01 L Finger11
+    400028: Ch01 L Finger12
+    400030: Ch01 L Finger1Nub
+    400032: Ch01 L Finger2
+    400034: Ch01 L Finger21
+    400036: Ch01 L Finger22
+    400038: Ch01 L Finger2Nub
+    400040: Ch01 L Finger3
+    400042: Ch01 L Finger31
+    400044: Ch01 L Finger32
+    400046: Ch01 L Finger3Nub
+    400048: Ch01 L Finger4
+    400050: Ch01 L Finger41
+    400052: Ch01 L Finger42
+    400054: Ch01 L Finger4Nub
+    400056: Ch01 L Foot
+    400058: Ch01 L Forearm
+    400060: Ch01 L ForeTwist
+    400062: Ch01 L ForeTwist1
+    400064: Ch01 L Hand
+    400066: Ch01 L Thigh
+    400068: Ch01 L Toe0
+    400070: Ch01 L Toe0Nub
+    400072: Ch01 L UpperArm
+    400074: Ch01 L_eyebrow0
+    400076: Ch01 L_eyebrow0Nub
+    400078: Ch01 L_eyebrow1
+    400080: Ch01 L_eyebrow1Nub
+    400082: Ch01 L_eyebrow2
+    400084: Ch01 L_eyebrow2Nub
+    400086: Ch01 L_eyelid
+    400088: Ch01 L_eyelidNub
+    400090: Ch01 L_middle
+    400092: Ch01 L_middleNub
+    400094: Ch01 M_down0
+    400096: Ch01 M_down0Nub
+    400098: Ch01 M_down1
+    400100: Ch01 M_down1Nub
+    400102: Ch01 M_down2
+    400104: Ch01 M_down2Nub
+    400106: Ch01 M_m0
+    400108: Ch01 M_m0Nub
+    400110: Ch01 M_m1
+    400112: Ch01 M_m1Nub
+    400114: Ch01 M_up0
+    400116: Ch01 M_up0Nub
+    400118: Ch01 M_up1
+    400120: Ch01 M_up1Nub
+    400122: Ch01 M_up2
+    400124: Ch01 M_up2Nub
+    400126: Ch01 Neck
+    400128: Ch01 Pelvis
+    400130: Ch01 R Calf
+    400132: Ch01 R Clavicle
+    400134: Ch01 R Finger0
+    400136: Ch01 R Finger01
+    400138: Ch01 R Finger02
+    400140: Ch01 R Finger0Nub
+    400142: Ch01 R Finger1
+    400144: Ch01 R Finger11
+    400146: Ch01 R Finger12
+    400148: Ch01 R Finger1Nub
+    400150: Ch01 R Finger2
+    400152: Ch01 R Finger21
+    400154: Ch01 R Finger22
+    400156: Ch01 R Finger2Nub
+    400158: Ch01 R Finger3
+    400160: Ch01 R Finger31
+    400162: Ch01 R Finger32
+    400164: Ch01 R Finger3Nub
+    400166: Ch01 R Finger4
+    400168: Ch01 R Finger41
+    400170: Ch01 R Finger42
+    400172: Ch01 R Finger4Nub
+    400174: Ch01 R Foot
+    400176: Ch01 R Forearm
+    400178: Ch01 R ForeTwist
+    400180: Ch01 R ForeTwist1
+    400182: Ch01 R Hand
+    400184: Ch01 R Thigh
+    400186: Ch01 R Toe0
+    400188: Ch01 R Toe0Nub
+    400190: Ch01 R UpperArm
+    400192: Ch01 R_eyebrow0
+    400194: Ch01 R_eyebrow0Nub
+    400196: Ch01 R_eyebrow1
+    400198: Ch01 R_eyebrow1Nub
+    400200: Ch01 R_eyebrow2
+    400202: Ch01 R_eyebrow2Nub
+    400204: Ch01 R_eyelid
+    400206: Ch01 R_eyelidNub
+    400208: Ch01 R_middle
+    400210: Ch01 R_middleNub
+    400212: Ch01 Spine
+    400214: Ch01 Spine1
+    400216: Ch01 Spine2
+    400218: //RootNode
+    400220: Eyes
+    400222: Head
+    400224: Inside_mounth
+    400226: Jacket
+    400228: Left_Hand
+    400230: Legs
+    400232: LTeeth
+    400234: M4A1_Body
+    400236: M4A1_Iron_Sight
+    400238: M4A1_Lhand
+    400240: M4A1_Magazine
+    400242: M4A1_Rhand
+    400244: Right_Hand
+    400246: Tongue
+    400248: Tshirt
+    400250: UTeeth
+    400252: Weapons
+    2100000: Body
+    2100002: Head
+    2100004: M_and_t
+    2100006: 23 - Default
+    2100008: lambert3SG
+    2100010: M4A1_Sopmod_Body__NRM
+    2100012: M4A1_Sopmod_Body
+    2100014: M4A1_Sopmod_Magazine__M4A1_Sopmod_Magazine_Diffuse_png
+    2100016: M4A1_Sopmod_Iron_Sight__M4A1_Sopmod_Iron_Sight_Diffuse_png
+    2300000: Eyes
+    2300002: LTeeth
+    2300004: M4A1_Body
+    2300006: M4A1_Iron_Sight
+    2300008: M4A1_Magazine
+    2300010: Tongue
+    2300012: UTeeth
+    3300000: Eyes
+    3300002: LTeeth
+    3300004: M4A1_Body
+    3300006: M4A1_Iron_Sight
+    3300008: M4A1_Magazine
+    3300010: Tongue
+    3300012: UTeeth
+    4300000: Legs
+    4300002: Head
+    4300004: Inside_mounth
+    4300006: Left_Hand
+    4300008: Right_Hand
+    4300010: Tongue
+    4300012: LTeeth
+    4300014: Eyes
+    4300016: UTeeth
+    4300018: M4A1_Body
+    4300020: M4A1_Magazine
+    4300022: M4A1_Iron_Sight
+    4300024: Tshirt
+    4300026: Jacket
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: Head
+    13700002: Inside_mounth
+    13700004: Jacket
+    13700006: Left_Hand
+    13700008: Legs
+    13700010: Right_Hand
+    13700012: Tshirt
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 3
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
