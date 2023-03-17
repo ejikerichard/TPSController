@@ -309,10 +309,10 @@ public class MeleeBehaviour : GenericBehaviour
         if(states.combat == CharacterStates.CombatStates.Unarmed){
             attackid = Random.Range(min, max);
         }
-        else if(states.combat == CharacterStates.CombatStates.Axe){
+        else if(states.combat == CharacterStates.CombatStates.Armed && WeaponHandler.Instance.weaponType == WeaponHandler.WeaponType.AXE){
             attackid = Random.Range(5, 7);
         }
-        if(states.combat == CharacterStates.CombatStates.Spear){
+        if(states.combat == CharacterStates.CombatStates.Armed && WeaponHandler.Instance.weaponType == WeaponHandler.WeaponType.SPEAR){
             attackid = Random.Range(8, 10);
         }
     }

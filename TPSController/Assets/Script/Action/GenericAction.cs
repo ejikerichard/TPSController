@@ -68,6 +68,7 @@ public class GenericAction : MonoBehaviour
 
                         if(triggerAction.IsBowWeapon && !WeaponHandler.Instance.IsBowPicked){
                             WeaponHandler.Instance.IsBowPicked = true;
+                            WeaponHandler.Instance.weaponType = WeaponHandler.WeaponType.BOW;
                         }else{
 
                             Debug.Log("Picked a bow before");
@@ -75,6 +76,7 @@ public class GenericAction : MonoBehaviour
 
                         if(triggerAction.IsRifleWeapon && !WeaponHandler.Instance.IsRiflePicked){
                             WeaponHandler.Instance.IsRiflePicked = true;
+                            WeaponHandler.Instance.weaponType = WeaponHandler.WeaponType.RIFLE;
                         }else{
                             Debug.Log("Picked a rifle before");
                         }

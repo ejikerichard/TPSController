@@ -36,6 +36,13 @@ public class WeaponHandler : MonoBehaviour
         public string equipItem = "EquipItem";
         public string rightMask = "IsRightMask";
     }
+
+    public enum WeaponType
+    {
+        BOW, RIFLE, AXE, SPEAR
+    }
+
+    public WeaponType weaponType;
     public Animations animations;
 
     public GameObject currentWeapon;
@@ -43,7 +50,7 @@ public class WeaponHandler : MonoBehaviour
     public bool aim;
     public bool isAiming;
     public bool axeMode, fistMode, spearMode, rifleMode;
-    public int weaponType;
+    public int weaponCount;
     public bool settingWeapon, bowEquip, bowUnEquiped, rifleEquip, rifleUnEquiped, Equip_Melee;
     public bool IsBowPicked, IsRiflePicked, IsMeleePicked;
 
@@ -65,22 +72,30 @@ public class WeaponHandler : MonoBehaviour
 
     public void SetupWeapons(){
 
-        if(!bowUnEquiped ){
-            Bow.Instance.SetEquipped(true);
-            Bow.Instance.SetOwner(this);
-            Bow.Instance.arrow.SetActive(true);
+        if(IsBowPicked){
+            if(!bowUnEquiped){
+                Bow.Instance.SetEquipped(true);
+                Bow.Instance.SetOwner(this);
+                Bow.Instance.arrow.SetActive(true);
+            }else{
+                Bow.Instance.SetEquipped(false);
+                Bow.Instance.SetOwner(this);
+                Bow.Instance.arrow.SetActive(false);
+            }
         }else{
-            Bow.Instance.SetEquipped(false);
-            Bow.Instance.SetOwner(this);
-            Bow.Instance.arrow.SetActive(false);
+           // Debug.Log("Bow is not picked yet");
         }
 
-        if (!rifleUnEquiped){
-            Rifle.Instance.SetEquipped(true);
-            Rifle.Instance.SetOwner(this);
+        if(IsRiflePicked){
+            if(!rifleUnEquiped){
+                Rifle.Instance.SetEquipped(true);
+                Rifle.Instance.SetOwner(this);
+            }else{
+                Rifle.Instance.SetEquipped(false);
+                Rifle.Instance.SetOwner(this);
+            }
         }else{
-            Rifle.Instance.SetEquipped(false);
-            Rifle.Instance.SetOwner(this);
+           // Debug.Log("Rifle is not picked yet");
         }
     }
 
@@ -89,11 +104,11 @@ public class WeaponHandler : MonoBehaviour
             if(currentWeapon == null && states.combat == CharacterStates.CombatStates.Unarmed){
                 fistMode = true;
             }
-            else if(states.combat == CharacterStates.CombatStates.Axe){
+            else if(states.combat == CharacterStates.CombatStates.Armed && weaponType == WeaponType.AXE){
 
                 axeMode = true;
             }
-            if(states.combat == CharacterStates.CombatStates.Spear){
+            if(states.combat == CharacterStates.CombatStates.Armed && weaponType == WeaponType.SPEAR){
                 spearMode = true;
             }
         }
@@ -110,10 +125,10 @@ public class WeaponHandler : MonoBehaviour
             states.combat = CharacterStates.CombatStates.Unarmed;
         }
         else if(currentWeapon != null && currentWeapon.gameObject.name == "Axe"){
-            states.combat = CharacterStates.CombatStates.Axe;
+            states.combat = CharacterStates.CombatStates.Armed;
         }
         if(currentWeapon != null && currentWeapon.gameObject.name == "Spear"){
-            states.combat = CharacterStates.CombatStates.Spear;
+            states.combat = CharacterStates.CombatStates.Armed;
         }
     }
 
@@ -122,7 +137,7 @@ public class WeaponHandler : MonoBehaviour
         if (!animator)
             return;
 
-        animator.SetInteger(animations.weaponTypeInt, weaponType);
+        animator.SetInteger(animations.weaponTypeInt, weaponCount);
 
 
         if(isAiming){
@@ -147,44 +162,91 @@ public class WeaponHandler : MonoBehaviour
 
     public void SwitchWeapons(){
 
-        if(!currentWeapon && IsBowPicked && bowUnEquiped){
+        if(!currentWeapon && IsBowPicked && bowUnEquiped && weaponType == WeaponType.BOW){
             bowUnEquiped = false;
             currentWeapon = Bow.Instance.gameObject;
             animator.SetTrigger(animations.equipItem);
-            weaponType = 1;
-            isAiming = true;
-            aim = true;
+            weaponCount = 1;
+           // isAiming = true;
+           // aim = true;
         }
-        else if(currentWeapon && IsBowPicked && !bowUnEquiped){
+        else if(!currentWeapon && IsRiflePicked && rifleUnEquiped && weaponType == WeaponType.RIFLE){
+            rifleUnEquiped = false;
+            currentWeapon = Rifle.Instance.gameObject;
+            animator.SetTrigger(animations.equipItem);
+            weaponCount = 1;
+            Debug.Log("Rifle Equiped");
+            //isAiming = true;
+            //aim = true;
+        }
+        else if(currentWeapon && IsBowPicked && bowUnEquiped && !rifleUnEquiped && weaponType == WeaponType.RIFLE){
+            bowUnEquiped = false;
+            rifleUnEquiped = true;
+            weaponType = WeaponType.BOW;
+            currentWeapon = Bow.Instance.gameObject;
+            animator.SetTrigger(animations.equipItem);
+            weaponCount += 1;
+            //isAiming = true;
+           // aim = true;
+        }
+        else if(currentWeapon && IsRiflePicked && rifleUnEquiped && !bowUnEquiped && weaponType == WeaponType.BOW){
+            rifleUnEquiped = false;
+            bowUnEquiped = true;
+            weaponType = WeaponType.RIFLE;
+            currentWeapon = Rifle.Instance.gameObject;
+            animator.SetTrigger(animations.equipItem);;
+            weaponCount += 1;
+            //isAiming = false;
+            //aim = false;
+            //    //isAiming = true;
+            //    //aim = true;
+        }
+        else if(currentWeapon && IsBowPicked && !bowUnEquiped && weaponType == WeaponType.BOW){
             bowUnEquiped = true;
             currentWeapon = null;
             animator.SetTrigger(animations.equipItem);
-            weaponType = 0;
-            isAiming = false;
-            aim = false;
+            weaponCount = 0;
+           // isAiming = false;
+           // aim = false;
+        }
+        else if(currentWeapon && IsRiflePicked && !rifleUnEquiped && weaponType == WeaponType.RIFLE){
+            rifleUnEquiped = true;
+            currentWeapon = null;
+            animator.SetTrigger(animations.equipItem);
+            weaponCount = 0;
         }
 
 
 
-        //if(!currentWeapon && IsRiflePicked && rifleUnEquiped){
+        //if(!currentWeapon && IsRiflePicked && rifleUnEquiped && weaponType == WeaponType.RIFLE){
         //    rifleUnEquiped = false;
         //    currentWeapon = Rifle.Instance.gameObject;
         //    animator.SetTrigger(animations.equipItem);
-        //    weaponType = 1;
-        //    isAiming = true;
-        //    aim = true;
+        //    weaponCount = 1;
+        //    Debug.Log("Rifle Equiped");
+        //    //isAiming = true;
+        //    //aim = true;
+        //}
+        //else if(currentWeapon && IsRiflePicked && rifleUnEquiped && !bowUnEquiped && weaponType == WeaponType.BOW){
+        //    rifleUnEquiped = false;
+        //    currentWeapon = Rifle.Instance.gameObject;
+        //    animator.SetTrigger(animations.equipItem);
+        //    weaponType = WeaponType.RIFLE;
+        //    weaponCount = 1;
+        //    //isAiming = true;
+        //    //aim = true;
         //}
         //else if(currentWeapon && IsRiflePicked && !rifleUnEquiped){
         //    rifleUnEquiped = true;
         //    currentWeapon = null;
         //    animator.SetTrigger(animations.equipItem);
-        //    weaponType = 0;
-        //    isAiming = false;
-        //    aim = false;
+        //    weaponCount = 0;
+        //    //isAiming = false;
+        //    //aim = false;
         //}
 
 
-        if(currentWeapon && IsBowPicked && bowUnEquiped){
+        if (currentWeapon && IsBowPicked && bowUnEquiped){
             if(currentWeapon.gameObject.name == "Axe"){
 
                 Axe.Instance.SetEquipped(false);
@@ -197,9 +259,9 @@ public class WeaponHandler : MonoBehaviour
                 bowUnEquiped = false;
                 currentWeapon = Bow.Instance.gameObject;
                 animator.SetTrigger(animations.equipItem);
-                weaponType = 1;
-                isAiming = true;
-                aim = true;
+                weaponCount = 1;
+                //isAiming = true;
+                //aim = true;
             }
             else if(currentWeapon.gameObject.name == "Spear"){
 
@@ -213,9 +275,9 @@ public class WeaponHandler : MonoBehaviour
                 bowUnEquiped = false;
                 currentWeapon = Bow.Instance.gameObject;
                 animator.SetTrigger(animations.equipItem);
-                weaponType = 1;
-                isAiming = true;
-                aim = true;
+                weaponCount = 1;
+                //isAiming = true;
+                //aim = true;
             }
         }
         else if(currentWeapon && IsRiflePicked && rifleUnEquiped){
@@ -230,9 +292,9 @@ public class WeaponHandler : MonoBehaviour
                 bowUnEquiped = false;
                 currentWeapon = Bow.Instance.gameObject;
                 animator.SetTrigger(animations.equipItem);
-                weaponType = 1;
-                isAiming = true;
-                aim = true;
+                weaponCount = 1;
+               // isAiming = true;
+               // aim = true;
             }
             else if(currentWeapon.gameObject.name == "Spear"){
                 Spear.Instance.SetEquipped(false);
@@ -245,9 +307,9 @@ public class WeaponHandler : MonoBehaviour
                 bowUnEquiped = false;
                 currentWeapon = Bow.Instance.gameObject;
                 animator.SetTrigger(animations.equipItem);
-                weaponType = 1;
-                isAiming = true;
-                aim = true;
+                weaponCount = 1;
+                //isAiming = true;
+                //aim = true;
             }
         }
 
@@ -330,6 +392,7 @@ public class WeaponHandler : MonoBehaviour
             Axe.Instance.SetEquipped(true);
             Axe.Instance.SetOwner(this);
             currentWeapon = Axe.Instance.gameObject;
+            weaponType = WeaponType.AXE;
             Equip_Melee = true;
         }
         else {
@@ -340,6 +403,7 @@ public class WeaponHandler : MonoBehaviour
             Spear.Instance.SetEquipped(true);
             Spear.Instance.SetOwner(this);
             currentWeapon = Spear.Instance.gameObject;
+            weaponType = WeaponType.SPEAR;
             Equip_Melee = true;
         }
         else{
@@ -352,7 +416,7 @@ public class WeaponHandler : MonoBehaviour
         if (!animator)
             return;
 
-        if(currentWeapon && userSettings.HandIKTarget && weaponType == 1 && !bowUnEquiped){
+        if(currentWeapon && userSettings.HandIKTarget && weaponCount == 1 && !bowUnEquiped){
 
             animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
             animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
@@ -363,7 +427,7 @@ public class WeaponHandler : MonoBehaviour
             animator.SetIKRotation(AvatarIKGoal.RightHand, targetRot);
             //Debug.Log("working");
         }
-        else if(currentWeapon && userSettings.HandIKTarget && weaponType == 1 && !rifleUnEquiped){
+        else if(currentWeapon && userSettings.HandIKTarget && weaponCount == 1 && !rifleUnEquiped){
             animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
             animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
             targetOne = userSettings.HandIKTarget;

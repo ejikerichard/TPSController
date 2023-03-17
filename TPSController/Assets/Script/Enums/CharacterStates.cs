@@ -13,7 +13,7 @@ public class CharacterStates : MonoBehaviour
     }
 
     public enum CombatStates{
-        Unarmed, Axe, Spear, Bow
+        Unarmed, Armed
     }
     public enum AttackID{
         AttackOne, AttackTwo, AttackThree, AttackFour, AttackFive
