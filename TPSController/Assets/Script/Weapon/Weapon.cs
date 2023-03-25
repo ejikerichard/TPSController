@@ -5,7 +5,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     public enum WeaponType{
-        None, Bow, Axe, Dagger, Spear 
+        None, Bow, Rifle,  Axe, Dagger, Spear
     }
     public WeaponType weaponType;
 
@@ -73,6 +73,9 @@ public class Weapon : MonoBehaviour
         switch(wpType){
             case WeaponType.Bow:
                 transform.SetParent(owner.GetComponent<WeaponHandler>().userSettings.UnequipSpot);
+                break;
+            case WeaponType.Rifle:
+                transform.SetParent(owner.GetComponent<WeaponHandler>().userSettings.rifleUnequipSpot);
                 break;
             case WeaponType.Axe:
                 //transform.SetParent(owner.userSettings.UnequipSpot);

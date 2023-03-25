@@ -24,7 +24,14 @@ public class AimBehaviour : GenericBehaviour{
 
         public Transform lockTarget;
 
+        [SerializeField]
+        public float walkSpeed = 0.15f;
+        public float runSpeed = 1.0f;
+        public float speed;
+        public float speeDampTime;
+        public float speedSeeker;
         public bool aim;
+        public bool bowMode;
         public float speedDamp;
 
         Dictionary<Weapon, GameObject> crosshairPrefabMap = new Dictionary<Weapon, GameObject>();
@@ -48,10 +55,24 @@ public class AimBehaviour : GenericBehaviour{
         }
     void Update(){
 
-        if(WeaponHandler.Instance.isAiming && !aim){
+        if(WeaponHandler.Instance.bowMode && !bowMode){
+            StartCoroutine(ToggleBowModeOn());
+        }
+        else if(bowMode && WeaponHandler.Instance.bowMode != true){
+            StartCoroutine(ToggleBowModeOff());
+        }
+
+        if(WeaponHandler.Instance.isAiming && bowMode){
             StartCoroutine(ToggleAimOn());
         }
-        else if(aim && WeaponHandler.Instance.isAiming != true){
+        else if(WeaponHandler.Instance.isAiming != true && bowMode){
+            StartCoroutine(ToggleAimOff());
+        }
+
+        if(WeaponHandler.Instance.isAiming && WeaponHandler.Instance.rifleMode && !aim){
+            StartCoroutine(ToggleAimOn());
+        }
+        else if(aim && WeaponHandler.Instance.isAiming != true && WeaponHandler.Instance.rifleMode){
             StartCoroutine(ToggleAimOff());
         }
 
@@ -61,6 +82,8 @@ public class AimBehaviour : GenericBehaviour{
         else if(!isStrafing){
             behaviourController.GetAnimator.SetBool(strafeBool, isStrafing);
         }
+
+
 
         if(aim){
             if(isCrouching){
@@ -99,7 +122,20 @@ public class AimBehaviour : GenericBehaviour{
     }
 
     void MoveController(float vertical, float horizontal){
-        if(vertical > 0 || horizontal > 0){
+
+        if(WeaponHandler.Instance.isAiming){
+
+            Vector2 dir = new Vector2(horizontal, vertical);
+            speed = Vector2.ClampMagnitude(dir, 1f).magnitude;
+            speedSeeker += Input.GetAxis("Mouse ScrollWheel");
+            speedSeeker = Mathf.Clamp(speedSeeker, walkSpeed, runSpeed);
+            speed *= speedSeeker;
+
+            behaviourController.GetAnimator.SetFloat(SpeedFloat, speed, speeDampTime, Time.deltaTime);
+
+        }
+
+        if (vertical > 0 || horizontal > 0){
             behaviourController.GetAnimator.SetBool(moveBool, true);
         }
         else if(vertical < 0 || horizontal < 0){
@@ -135,6 +171,31 @@ public class AimBehaviour : GenericBehaviour{
         yield return new WaitForSeconds(0.3f);
         behaviourController.GetCameraRig.ResetTargetOffsets();
         behaviourController.GetCameraRig.ResetMaxVerticalAngle();
+        yield return new WaitForSeconds(0.05f);
+        behaviourController.RevokeOverridingBehaviour(this);
+    }
+
+    private IEnumerator ToggleBowModeOn(){
+        yield return new WaitForSeconds(0.05f);
+
+        if (behaviourController.GetTempLockStatus(this.behaviourCode) || behaviourController.IsOverriding(this))
+            yield return false;
+
+        else{
+            bowMode = true;
+            int signal = 1;
+            yield return new WaitForSeconds(0.1f);
+            behaviourController.GetAnimator.SetFloat(SpeedFloat, 0);
+            // This state overrides the active one.
+            behaviourController.OverrideWithBehaviour(this);
+        }
+    }
+    private IEnumerator ToggleBowModeOff(){
+        //aim = false;
+        bowMode = false;
+        yield return new WaitForSeconds(0.3f);
+        //behaviourController.GetCameraRig.ResetTargetOffsets();
+        //behaviourController.GetCameraRig.ResetMaxVerticalAngle();
         yield return new WaitForSeconds(0.05f);
         behaviourController.RevokeOverridingBehaviour(this);
     }

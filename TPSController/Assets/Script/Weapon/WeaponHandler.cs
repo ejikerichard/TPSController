@@ -22,8 +22,9 @@ public class WeaponHandler : MonoBehaviour
     {
         public Transform UnequipSpot;
         public Transform rifleUnequipSpot;
-        public Transform HandIKTarget;
-        public Transform RightequipHand, LeftequipHand, SpearEquipHand;
+        public Transform RightHandIKTarget, LeftHandIKTarget, rifle_RightHandIK, rifle_LeftHandIK, 
+                        rifle_AimLeftIK, rifle_AimRightIK, bow_AimleftIK, bow_AimrightIK;
+        public Transform RightequipHand, LeftequipHand, SpearEquipHand, rifle_LefteuipedHand;
     }
     [SerializeField]
     public UserSettings userSettings;
@@ -33,6 +34,8 @@ public class WeaponHandler : MonoBehaviour
 
         public string weaponTypeInt = "WeaponType";
         public string aimbool = "IsAiming";
+        public string bowMode = "bowMode";
+        public string rifleMode = "rifleMode";
         public string equipItem = "EquipItem";
         public string rightMask = "IsRightMask";
     }
@@ -46,15 +49,16 @@ public class WeaponHandler : MonoBehaviour
     public Animations animations;
 
     public GameObject currentWeapon;
-    public int maxWeapons = 5;
+    public int maxWeapons = 2;
     public bool aim;
     public bool isAiming;
-    public bool axeMode, fistMode, spearMode, rifleMode;
+    public bool axeMode, fistMode, spearMode, rifleMode, bowMode;
     public int weaponCount;
     public bool settingWeapon, bowEquip, bowUnEquiped, rifleEquip, rifleUnEquiped, Equip_Melee;
     public bool IsBowPicked, IsRiflePicked, IsMeleePicked;
 
     public Transform targetOne;
+    public Transform targetTwo;
     void Start(){
         animator = GetComponent<Animator>();
         states = GetComponent<CharacterStates>();
@@ -162,88 +166,100 @@ public class WeaponHandler : MonoBehaviour
 
     public void SwitchWeapons(){
 
-        if(!currentWeapon && IsBowPicked && bowUnEquiped && weaponType == WeaponType.BOW){
+        if(!currentWeapon && IsBowPicked && bowUnEquiped && weaponType == WeaponType.BOW && weaponCount <= 0){
             bowUnEquiped = false;
+            bowMode = true;
             currentWeapon = Bow.Instance.gameObject;
             animator.SetTrigger(animations.equipItem);
-            weaponCount = 1;
+            animator.SetBool(animations.bowMode, bowMode);
+            weaponCount += 1;
            // isAiming = true;
            // aim = true;
         }
-        else if(!currentWeapon && IsRiflePicked && rifleUnEquiped && weaponType == WeaponType.RIFLE){
+        else if(!currentWeapon && IsRiflePicked && rifleUnEquiped && weaponType == WeaponType.RIFLE && weaponCount <= 0){
             rifleUnEquiped = false;
+            rifleMode = true;
             currentWeapon = Rifle.Instance.gameObject;
             animator.SetTrigger(animations.equipItem);
-            weaponCount = 1;
-            Debug.Log("Rifle Equiped");
+            animator.SetBool(animations.rifleMode, rifleMode);
+            weaponCount += 1;
             //isAiming = true;
             //aim = true;
         }
-        else if(currentWeapon && IsBowPicked && bowUnEquiped && !rifleUnEquiped && weaponType == WeaponType.RIFLE){
+        else if(currentWeapon && IsBowPicked && bowUnEquiped && !rifleUnEquiped && weaponType == WeaponType.RIFLE && weaponCount <= 1){
             bowUnEquiped = false;
             rifleUnEquiped = true;
+            rifleMode = false;
+            bowMode = true;
             weaponType = WeaponType.BOW;
             currentWeapon = Bow.Instance.gameObject;
             animator.SetTrigger(animations.equipItem);
-            weaponCount += 1;
+            animator.SetBool(animations.bowMode, bowMode);
+            animator.SetBool(animations.rifleMode, rifleMode);
+
+            weaponCount +=1;
             //isAiming = true;
            // aim = true;
         }
-        else if(currentWeapon && IsRiflePicked && rifleUnEquiped && !bowUnEquiped && weaponType == WeaponType.BOW){
+        else if(currentWeapon && IsRiflePicked && rifleUnEquiped && !bowUnEquiped && weaponType == WeaponType.BOW && weaponCount <= 1){
             rifleUnEquiped = false;
             bowUnEquiped = true;
+            bowMode = false;
+            rifleMode = true;
             weaponType = WeaponType.RIFLE;
             currentWeapon = Rifle.Instance.gameObject;
-            animator.SetTrigger(animations.equipItem);;
+            animator.SetTrigger(animations.equipItem);
+            animator.SetBool(animations.bowMode, bowMode);
+            animator.SetBool(animations.rifleMode, rifleMode);
+
             weaponCount += 1;
             //isAiming = false;
             //aim = false;
             //    //isAiming = true;
             //    //aim = true;
         }
+        else if(currentWeapon && IsBowPicked && bowUnEquiped && !rifleUnEquiped && weaponType == WeaponType.RIFLE && weaponCount >= 2){
+            bowUnEquiped = true;
+            rifleUnEquiped = true;
+            currentWeapon = null;
+            bowMode = false;
+            rifleMode = false;
+            animator.SetTrigger(animations.equipItem);
+            animator.SetBool(animations.bowMode, bowMode);
+            animator.SetBool(animations.rifleMode, rifleMode);
+            weaponCount = 0;
+        }
+        else if(currentWeapon && IsRiflePicked && rifleUnEquiped && !bowUnEquiped && weaponType == WeaponType.BOW && weaponCount >= 2){
+            bowUnEquiped = true;
+            rifleUnEquiped = true;
+            currentWeapon = null;
+            bowMode = false;
+            rifleMode = false;
+            animator.SetTrigger(animations.equipItem);
+            animator.SetBool(animations.bowMode, bowMode);
+            animator.SetBool(animations.rifleMode, rifleMode);
+            weaponCount = 0;
+        }
         else if(currentWeapon && IsBowPicked && !bowUnEquiped && weaponType == WeaponType.BOW){
             bowUnEquiped = true;
             currentWeapon = null;
+            bowMode = false;
             animator.SetTrigger(animations.equipItem);
+            animator.SetBool(animations.bowMode, bowMode);
             weaponCount = 0;
            // isAiming = false;
            // aim = false;
         }
         else if(currentWeapon && IsRiflePicked && !rifleUnEquiped && weaponType == WeaponType.RIFLE){
             rifleUnEquiped = true;
+            rifleMode = false;
             currentWeapon = null;
             animator.SetTrigger(animations.equipItem);
+            animator.SetBool(animations.rifleMode, rifleMode);
+            //animator.SetBool(animations.bowMode, false);
             weaponCount = 0;
         }
 
-
-
-        //if(!currentWeapon && IsRiflePicked && rifleUnEquiped && weaponType == WeaponType.RIFLE){
-        //    rifleUnEquiped = false;
-        //    currentWeapon = Rifle.Instance.gameObject;
-        //    animator.SetTrigger(animations.equipItem);
-        //    weaponCount = 1;
-        //    Debug.Log("Rifle Equiped");
-        //    //isAiming = true;
-        //    //aim = true;
-        //}
-        //else if(currentWeapon && IsRiflePicked && rifleUnEquiped && !bowUnEquiped && weaponType == WeaponType.BOW){
-        //    rifleUnEquiped = false;
-        //    currentWeapon = Rifle.Instance.gameObject;
-        //    animator.SetTrigger(animations.equipItem);
-        //    weaponType = WeaponType.RIFLE;
-        //    weaponCount = 1;
-        //    //isAiming = true;
-        //    //aim = true;
-        //}
-        //else if(currentWeapon && IsRiflePicked && !rifleUnEquiped){
-        //    rifleUnEquiped = true;
-        //    currentWeapon = null;
-        //    animator.SetTrigger(animations.equipItem);
-        //    weaponCount = 0;
-        //    //isAiming = false;
-        //    //aim = false;
-        //}
 
 
         if (currentWeapon && IsBowPicked && bowUnEquiped){
@@ -416,31 +432,87 @@ public class WeaponHandler : MonoBehaviour
         if (!animator)
             return;
 
-        if(currentWeapon && userSettings.HandIKTarget && weaponCount == 1 && !bowUnEquiped){
+        if(currentWeapon && userSettings.RightHandIKTarget && weaponType == WeaponType.BOW){
 
             animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
             animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
-            targetOne = userSettings.HandIKTarget;
+            targetOne = userSettings.RightHandIKTarget;
             Vector3 targetPos = targetOne.position;
             Quaternion targetRot = targetOne.rotation;
             animator.SetIKPosition(AvatarIKGoal.RightHand, targetPos);
             animator.SetIKRotation(AvatarIKGoal.RightHand, targetRot);
-            //Debug.Log("working");
+
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+            targetTwo = userSettings.LeftHandIKTarget;
+            Vector3 targetPosTwo = targetTwo.position;
+            Quaternion targerRotTwo = targetTwo.rotation;
+            animator.SetIKPosition(AvatarIKGoal.LeftHand, targetPosTwo);
+            animator.SetIKRotation(AvatarIKGoal.LeftHand, targerRotTwo);
+            Debug.Log("BowIK");
         }
-        else if(currentWeapon && userSettings.HandIKTarget && weaponCount == 1 && !rifleUnEquiped){
+        else if(currentWeapon && userSettings.rifle_RightHandIK  && weaponType == WeaponType.RIFLE){
             animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
             animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
-            targetOne = userSettings.HandIKTarget;
+            targetOne = userSettings.rifle_RightHandIK;
             Vector3 targetPos = targetOne.position;
             Quaternion targetRot = targetOne.rotation;
             animator.SetIKPosition(AvatarIKGoal.RightHand, targetPos);
             animator.SetIKRotation(AvatarIKGoal.RightHand, targetRot);
-            //Debug.Log("working");
+
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+            targetTwo = userSettings.rifle_LeftHandIK;
+            Vector3 targetPosTwo = targetTwo.position;
+            Quaternion targerRotTwo = targetTwo.rotation;
+            animator.SetIKPosition(AvatarIKGoal.LeftHand, targetPosTwo);
+            animator.SetIKRotation(AvatarIKGoal.LeftHand, targerRotTwo);
+            Debug.Log("RifleIK");
+
         }
+        if(currentWeapon && userSettings.rifle_AimRightIK && isAiming && weaponType == WeaponType.RIFLE){
+            animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
+            animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
+            targetOne = userSettings.rifle_AimRightIK;
+            Vector3 targetPos = targetOne.position;
+            Quaternion targetRot = targetOne.rotation;
+            animator.SetIKPosition(AvatarIKGoal.RightHand, targetPos);
+            animator.SetIKRotation(AvatarIKGoal.RightHand, targetRot);
+
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+            targetTwo = userSettings.rifle_AimLeftIK;
+            Vector3 targetPosTwo = targetTwo.position;
+            Quaternion targerRotTwo = targetTwo.rotation;
+            animator.SetIKPosition(AvatarIKGoal.LeftHand, targetPosTwo);
+            animator.SetIKRotation(AvatarIKGoal.LeftHand, targerRotTwo);
+            Debug.Log("RifleIK");
+        }
+        else if (currentWeapon && userSettings.bow_AimrightIK && isAiming && weaponType == WeaponType.BOW){
+            animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
+            animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
+            targetOne = userSettings.bow_AimrightIK;
+            Vector3 targetPos = targetOne.position;
+            Quaternion targetRot = targetOne.rotation;
+            animator.SetIKPosition(AvatarIKGoal.RightHand, targetPos);
+            animator.SetIKRotation(AvatarIKGoal.RightHand, targetRot);
+
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+            targetTwo = userSettings.bow_AimleftIK;
+            Vector3 targetPosTwo = targetTwo.position;
+            Quaternion targerRotTwo = targetTwo.rotation;
+            animator.SetIKPosition(AvatarIKGoal.LeftHand, targetPosTwo);
+            animator.SetIKRotation(AvatarIKGoal.LeftHand, targerRotTwo);
+            Debug.Log("RifleIK");
+        }       
         else{
-
             animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0);
             animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0);
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
+            animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0);
+            targetOne = null;
+            targetTwo = null;
             //Debug.Log("not working");
         }
     }

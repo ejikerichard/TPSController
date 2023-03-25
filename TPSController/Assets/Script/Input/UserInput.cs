@@ -61,6 +61,24 @@ public class UserInput : MonoBehaviour
             weaponHandler.SwitchWeapons();
             Debug.Log("amount");
         }
+
+        if (Input.GetMouseButton(input.mouseButtonOne) && weaponHandler.bowMode){
+            weaponHandler.isAiming = true;
+            weaponHandler.aim = true;
+        }
+        else if(Input.GetMouseButtonUp(input.mouseButtonOne) && weaponHandler.bowMode){
+            weaponHandler.isAiming = false;
+            weaponHandler.aim = false;
+        }
+
+        if(Input.GetMouseButton(input.mouseButtonOne) && weaponHandler.rifleMode){
+            weaponHandler.isAiming = true;
+            weaponHandler.aim = true;
+        }
+        //else if(Input.GetMouseButtonUp(input.mouseButtonOne) && weaponHandler.rifleMode){
+        //    weaponHandler.isAiming = false;
+        //    weaponHandler.aim = false;
+        //}
     }
 }
 
