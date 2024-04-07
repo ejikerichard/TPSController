@@ -7,7 +7,9 @@ public class CharacterStates : MonoBehaviour
     public enum Locomotions{
         FreeLocomotion, CombatLocomotion
     }
-
+    public enum Movement{
+        WALK, RUNNING
+    }
     public enum Actions{
         None, ClimbUp, Vault, Push, Pulling
     }
@@ -20,6 +22,7 @@ public class CharacterStates : MonoBehaviour
     }
 
     public Locomotions locomotions;
+    public Movement movement;
     public Actions actions;
     public CombatStates combat;
     public AttackID attackID;

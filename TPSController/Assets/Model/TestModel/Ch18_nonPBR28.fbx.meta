@@ -3,32 +3,7 @@ guid: fe3538e8e7c2853409ee221a863fcda9
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Ch18_Body
-    second: {fileID: 2100000, guid: 22b091670a9a3154f8c97af84fd8675b, type: 2}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch18_1001_Diffuse
-    second: {fileID: 2800000, guid: cafcb0a815e4e1641860666170d224de, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch18_1001_Glossiness
-    second: {fileID: 2800000, guid: 49557a27e84801443ae1330ceef03708, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch18_1001_Normal
-    second: {fileID: 2800000, guid: 03da500b57469c54b945551709bd6b0f, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch18_1001_Specular
-    second: {fileID: 2800000, guid: 5343a9dc73835764483d04194277c1d4, type: 3}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -116,7 +91,7 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1

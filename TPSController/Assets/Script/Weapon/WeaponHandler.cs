@@ -24,7 +24,7 @@ public class WeaponHandler : MonoBehaviour
         public Transform rifleUnequipSpot;
         public Transform RightHandIKTarget, LeftHandIKTarget, rifle_RightHandIK, rifle_LeftHandIK, 
                         rifle_AimLeftIK, rifle_AimRightIK, bow_AimleftIK, bow_AimrightIK;
-        public Transform RightequipHand, LeftequipHand, SpearEquipHand, rifle_LefteuipedHand;
+        public Transform RightequipHand, LeftequipHand, SpearEquipHand, rifle_LefteuipedHand, rifleAimHolder, bowAimHolder;
     }
     [SerializeField]
     public UserSettings userSettings;
@@ -432,7 +432,7 @@ public class WeaponHandler : MonoBehaviour
         if (!animator)
             return;
 
-        if(currentWeapon && userSettings.RightHandIKTarget && weaponType == WeaponType.BOW){
+        if(currentWeapon && userSettings.RightHandIKTarget && !isAiming && weaponType == WeaponType.BOW){
 
             animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
             animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
@@ -451,7 +451,7 @@ public class WeaponHandler : MonoBehaviour
             animator.SetIKRotation(AvatarIKGoal.LeftHand, targerRotTwo);
             Debug.Log("BowIK");
         }
-        else if(currentWeapon && userSettings.rifle_RightHandIK  && weaponType == WeaponType.RIFLE){
+        else if(currentWeapon && userSettings.rifle_RightHandIK && !isAiming  && weaponType == WeaponType.RIFLE){
             animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
             animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
             targetOne = userSettings.rifle_RightHandIK;
@@ -470,7 +470,7 @@ public class WeaponHandler : MonoBehaviour
             Debug.Log("RifleIK");
 
         }
-        if(currentWeapon && userSettings.rifle_AimRightIK && isAiming && weaponType == WeaponType.RIFLE){
+        else if(currentWeapon && userSettings.rifle_RightHandIK && isAiming && weaponType == WeaponType.RIFLE){
             animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
             animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
             targetOne = userSettings.rifle_AimRightIK;
@@ -488,7 +488,7 @@ public class WeaponHandler : MonoBehaviour
             animator.SetIKRotation(AvatarIKGoal.LeftHand, targerRotTwo);
             Debug.Log("RifleIK");
         }
-        else if (currentWeapon && userSettings.bow_AimrightIK && isAiming && weaponType == WeaponType.BOW){
+        else if (currentWeapon && userSettings.RightHandIKTarget && isAiming &&  weaponType == WeaponType.BOW){
             animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
             animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
             targetOne = userSettings.bow_AimrightIK;

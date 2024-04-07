@@ -46,12 +46,18 @@ public class UserInput : MonoBehaviour
     void Update(){
         WeaponLogic();
     }
+    void FixedUpdate(){
+        ///InputMove();
+    }
 
     void LateUpdate(){
 
         if (!weaponHandler.aim){
             OnLateUpdate.Invoke();
         }
+    }
+    void InputMove(){
+        characterMovement3D.MoveCharacter(Input.GetAxis(input.verticalAxis), Input.GetAxis(input.horizontalAxis));
     }
     void WeaponLogic(){
         if(!weaponHandler)
@@ -71,14 +77,14 @@ public class UserInput : MonoBehaviour
             weaponHandler.aim = false;
         }
 
-        if(Input.GetMouseButton(input.mouseButtonOne) && weaponHandler.rifleMode){
+        if (Input.GetMouseButton(input.mouseButtonOne) && weaponHandler.rifleMode){
             weaponHandler.isAiming = true;
             weaponHandler.aim = true;
         }
-        //else if(Input.GetMouseButtonUp(input.mouseButtonOne) && weaponHandler.rifleMode){
-        //    weaponHandler.isAiming = false;
-        //    weaponHandler.aim = false;
-        //}
+        else if(Input.GetMouseButtonUp(input.mouseButtonOne) && weaponHandler.rifleMode){
+            weaponHandler.isAiming = false;
+            weaponHandler.aim = false;
+        }
     }
 }
 

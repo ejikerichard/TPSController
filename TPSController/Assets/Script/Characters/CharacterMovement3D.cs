@@ -16,13 +16,17 @@ public class CharacterMovement3D : GenericBehaviour
     public bool isCrouch, isClimb, isClimbing;
 
     [SerializeField]
-    public float walkSpeed = 0.15f;
-    public float runSpeed = 1.0f;
+    public float anim_walkSpeed = 0.15f;
+    public float anim_runSpeed = 1.0f;
+    public float movementSpeed;
+    public float runSpeed;
+    public float walkSpeed;
     private float forward;
     private float strafe;
     public float speed;
     public float speeDampTime;
     public float speedSeeker;
+    public float movementSpeedSeeker;
 
 
     void Start(){
@@ -34,7 +38,8 @@ public class CharacterMovement3D : GenericBehaviour
         behaviourController.RegisterDefaultBehaviour(this.behaviourCode);
         states = GetComponent<CharacterStates>();
 
-        speedSeeker = runSpeed;
+        //speedSeeker = anim_walkSpeed;
+
     }
     public override void LocalFixedUpdate(){
 
@@ -52,8 +57,18 @@ public class CharacterMovement3D : GenericBehaviour
         Vector2 dir = new Vector2(horizontal, vertical);
         speed = Vector2.ClampMagnitude(dir, 1f).magnitude;
         speedSeeker += Input.GetAxis("Mouse ScrollWheel");
-        speedSeeker = Mathf.Clamp(speedSeeker, walkSpeed, runSpeed);
+        speedSeeker = Mathf.Clamp(speedSeeker, anim_walkSpeed, anim_runSpeed);
         speed *= speedSeeker;
+
+        movementSpeedSeeker += Input.GetAxis("Mouse ScrollWheel") * 80f;
+        movementSpeedSeeker = Mathf.Clamp(movementSpeedSeeker, walkSpeed, runSpeed);
+        movementSpeed = movementSpeedSeeker;
+
+
+        if (speedSeeker == anim_runSpeed)
+            states.movement = CharacterStates.Movement.RUNNING;
+        else if (speedSeeker == anim_walkSpeed)
+            states.movement = CharacterStates.Movement.WALK;
 
 
         if(!isCrouch){
@@ -65,8 +80,9 @@ public class CharacterMovement3D : GenericBehaviour
 
             Vector2 direction = new Vector2(horizontal, vertical);
             speed = Vector2.ClampMagnitude(dir, 1f).magnitude;
-            speedSeeker = Mathf.Clamp(speedSeeker, walkSpeed, runSpeed);
+            speedSeeker = Mathf.Clamp(speedSeeker, anim_walkSpeed, anim_runSpeed);
             speed *= speedSeeker;
+     
 
             behaviourController.GetAnimator.SetFloat(CrouchFloat, speed, speeDampTime, Time.deltaTime);
 
@@ -79,6 +95,28 @@ public class CharacterMovement3D : GenericBehaviour
             behaviourController.GetCameraRig.ResetTargetOffsets();
             behaviourController.GetCameraRig.ResetMaxVerticalAngle();
         }
+    }
+
+    public void MoveCharacter(float vertical,float horizontal){
+        if(states.movement == CharacterStates.Movement.RUNNING || states.movement == CharacterStates.Movement.WALK){
+
+            Vector3 forward = behaviourController.camTransform.TransformDirection(Vector3.forward);
+
+            // Player is moving on ground, Y component of camera facing is not relevant.
+            forward.y = 0.0f;
+            forward = forward.normalized;
+
+            // Calculate target direction based on camera forward and direction key.
+            Vector3 right = new Vector3(forward.z, 0, -forward.x);
+            Vector3 targetDirection;
+            targetDirection = forward * vertical + right * horizontal;
+
+            behaviourController.mybody.velocity = targetDirection * movementSpeed;
+        }
+    }
+
+    private void OnAnimatorMove(){
+        MoveCharacter(Input.GetAxis(UserInput.Instance.input.verticalAxis), Input.GetAxis(UserInput.Instance.input.horizontalAxis));
     }
 
     void GroundCheck(){

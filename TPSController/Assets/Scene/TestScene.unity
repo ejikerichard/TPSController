@@ -943,7 +943,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 173088034}
   m_LocalRotation: {x: 0.00007705883, y: 0.00022848207, z: -0.0028992502, w: 0.99999577}
-  m_LocalPosition: {x: -0, y: -0.05, z: -0}
+  m_LocalPosition: {x: -0, y: -0.06, z: -0}
   m_LocalScale: {x: 10, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7613,19 +7613,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 873fedc08e2ba5148abe9ad4c3913a76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoAction: 1
+  autoAction: 0
   disableCollision: 1
   disableGravity: 1
   resetPlayerSettings: 1
   playAnimation: Vault
-  endExitTimeAnimation: 0.8
+  endExitTimeAnimation: 0.7
   avatarTarget: 4
   matchTargetMask: {x: 0, y: 1, z: 1}
   matchTarget: {fileID: 752658515}
   startMatchTarget: 0
   endMatchTarget: 0.3
   activeFromForward: 1
-  useTriggerRotation: 0
+  useTriggerRotation: 1
   destroyAfter: 0
   isWeapon: 0
   IsBowWeapon: 0

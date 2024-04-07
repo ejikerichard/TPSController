@@ -49,10 +49,17 @@ public class Rifle : MonoBehaviour
         else if (!owner.userSettings.LeftequipHand)
             return;
 
-        transform.SetParent(owner.userSettings.rifle_LefteuipedHand);
-        transform.position = owner.userSettings.rifle_LefteuipedHand.position;
-        transform.rotation = owner.userSettings.rifle_LefteuipedHand.rotation;
-        userSettings.equipedHand = true;
+        if (!owner.isAiming){
+            transform.SetParent(owner.userSettings.rifle_LefteuipedHand);
+            transform.position = owner.userSettings.rifle_LefteuipedHand.position;
+            transform.rotation = owner.userSettings.rifle_LefteuipedHand.rotation;
+            userSettings.equipedHand = true;
+        }else{
+            transform.SetParent(owner.userSettings.rifleAimHolder);
+            transform.position = owner.userSettings.rifleAimHolder.position;
+            transform.rotation = owner.userSettings.rifleAimHolder.rotation;
+            userSettings.equipedHand = true;
+        }
     }
     void Unequip(){
 

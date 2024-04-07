@@ -39,6 +39,7 @@ public class BehaviourController : MonoBehaviour
 
     public bool isRolling;
     public bool customAction;
+    public bool isVault;
     public bool isShooting;
     public bool lockOn;
 
@@ -165,7 +166,6 @@ public class BehaviourController : MonoBehaviour
             }
         }
     }
-
     public void LayerControl(){
         baseLayerInfo = animator.GetCurrentAnimatorStateInfo(baseLayer);
         underBodyInfo = animator.GetCurrentAnimatorStateInfo(underBodyLayer);
@@ -179,9 +179,15 @@ public class BehaviourController : MonoBehaviour
 
         isShooting = shotBodyInfo.IsName("BowShot");
         customAction = IsAnimatorTag("CustomAction");
+        isVault = IsAnimatorTag("Vault");
 
         if(customAction){
             Debug.Log("ClimbUp");
+        }
+
+        if(isVault){
+            transform.Translate(transform.forward * 0.9f * Time.deltaTime);
+            //transform.Translate(Vector3.up * 1f * Time.deltaTime);
         }
 
         if(WeaponHandler.Instance.isAiming){

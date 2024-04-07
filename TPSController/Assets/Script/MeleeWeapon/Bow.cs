@@ -61,10 +61,18 @@ public class Bow : MonoBehaviour
         else if (!owner.userSettings.LeftequipHand)
             return;
 
-        transform.SetParent(owner.userSettings.LeftequipHand);
-        transform.position = owner.userSettings.LeftequipHand.position;
-        transform.rotation = owner.userSettings.LeftequipHand.rotation;
-        userSettings.equipedHand = true;
+
+        if (!owner.isAiming){
+            transform.SetParent(owner.userSettings.LeftequipHand);
+            transform.position = owner.userSettings.LeftequipHand.position;
+            transform.rotation = owner.userSettings.LeftequipHand.rotation;
+            userSettings.equipedHand = true;
+        }else{
+            transform.SetParent(owner.userSettings.bowAimHolder);
+            transform.position = owner.userSettings.bowAimHolder.position;
+            transform.rotation = owner.userSettings.bowAimHolder.rotation;
+            userSettings.equipedHand = true;
+        }
     }
 
     void Unequip(){

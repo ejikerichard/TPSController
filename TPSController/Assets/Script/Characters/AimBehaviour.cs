@@ -20,6 +20,8 @@ public class AimBehaviour : GenericBehaviour{
         public float aimTurnSmoothing = 0.15f;
         public Vector3 aimPivotOffset = new Vector3(0, 1, 0);
         public Vector3 aimCamOffset = new Vector3(0.52f, 0.55f, -0.89f);
+        public Vector3 bowAimCamPivotOffset = new Vector3(0, 1, 0);
+        public Vector3 bowAimCamOffset = new Vector3(0.52f, 0.49f, -0.89f);
         public Vector3 crouchaimCamOffset = new Vector3(0.5f, 0.2f, -1.1f);
 
         public Transform lockTarget;
@@ -63,14 +65,16 @@ public class AimBehaviour : GenericBehaviour{
         }
 
         if(WeaponHandler.Instance.isAiming && bowMode){
-            StartCoroutine(ToggleAimOn());
+            StartCoroutine(ToggleBowAimOn());
+            Debug.Log("Bow Cam Toggle");
         }
         else if(WeaponHandler.Instance.isAiming != true && bowMode){
-            StartCoroutine(ToggleAimOff());
+            StartCoroutine(ToggleBowAimOff());
         }
 
         if(WeaponHandler.Instance.isAiming && WeaponHandler.Instance.rifleMode && !aim){
             StartCoroutine(ToggleAimOn());
+            Debug.Log("Rifle Cam Toggle");
         }
         else if(aim && WeaponHandler.Instance.isAiming != true && WeaponHandler.Instance.rifleMode){
             StartCoroutine(ToggleAimOff());
@@ -85,16 +89,16 @@ public class AimBehaviour : GenericBehaviour{
 
 
 
-        if(aim){
-            if(isCrouching){
-                behaviourController.GetAnimator.SetBool(crouchBool, isCrouching);
-                behaviourController.GetCameraRig.SetTargetOffsets(aimPivotOffset, crouchaimCamOffset);
-            }
-            else if (!isCrouching){
-                behaviourController.GetAnimator.SetBool(crouchBool, isCrouching);
-                behaviourController.GetCameraRig.SetTargetOffsets(aimPivotOffset, aimCamOffset);
-            }
-        }
+        //if(aim){
+        //    if(isCrouching){
+        //        behaviourController.GetAnimator.SetBool(crouchBool, isCrouching);
+        //        behaviourController.GetCameraRig.SetTargetOffsets(aimPivotOffset, crouchaimCamOffset);
+        //    }
+        //    else if (!isCrouching){
+        //        behaviourController.GetAnimator.SetBool(crouchBool, isCrouching);
+        //        behaviourController.GetCameraRig.SetTargetOffsets(aimPivotOffset, aimCamOffset);
+        //    }
+        //}
     }
     void FixedUpdate(){
         Animate(behaviourController.GetV, behaviourController.GetH);
@@ -175,6 +179,35 @@ public class AimBehaviour : GenericBehaviour{
         behaviourController.RevokeOverridingBehaviour(this);
     }
 
+    private IEnumerator ToggleBowAimOn(){
+        yield return new WaitForSeconds(0.05f);
+        // Aiming is not possible.
+        if (behaviourController.GetTempLockStatus(this.behaviourCode) || behaviourController.IsOverriding(this))
+            yield return false;
+
+        // Start aiming.
+        else{
+            aim = true;
+            isStrafing = true;
+            int signal = 1;
+            bowAimCamOffset.x = Mathf.Abs(bowAimCamOffset.x) * signal;
+            bowAimCamPivotOffset.x = Mathf.Abs(bowAimCamPivotOffset.x) * signal;
+            yield return new WaitForSeconds(0.1f);
+            behaviourController.GetAnimator.SetFloat(SpeedFloat, 0);
+            // This state overrides the active one.
+            behaviourController.OverrideWithBehaviour(this);
+        }
+    }
+    private IEnumerator ToggleBowAimOff(){
+        aim = false;
+        isStrafing = false;
+        yield return new WaitForSeconds(0.3f);
+        behaviourController.GetCameraRig.ResetTargetOffsets();
+        behaviourController.GetCameraRig.ResetMaxVerticalAngle();
+        yield return new WaitForSeconds(0.05f);
+        behaviourController.RevokeOverridingBehaviour(this);
+    }
+
     private IEnumerator ToggleBowModeOn(){
         yield return new WaitForSeconds(0.05f);
 
@@ -203,8 +236,12 @@ public class AimBehaviour : GenericBehaviour{
     // LocalFixedUpdate overrides the virtual function of the base class.
     public override void LocalFixedUpdate(){
         // Set camera position and orientation to the aim mode parameters.
-        if (WeaponHandler.Instance.aim)
-            behaviourController.GetCameraRig.SetTargetOffsets(aimPivotOffset, aimCamOffset);
+        if(WeaponHandler.Instance.aim && WeaponHandler.Instance.rifleMode){
+           behaviourController.GetCameraRig.SetTargetOffsets(aimPivotOffset, aimCamOffset);
+        }
+        else if(WeaponHandler.Instance.aim && WeaponHandler.Instance.bowMode){
+            behaviourController.GetCameraRig.SetTargetOffsets(bowAimCamPivotOffset, bowAimCamOffset);
+        }
     }
 
     void Rotating(){
