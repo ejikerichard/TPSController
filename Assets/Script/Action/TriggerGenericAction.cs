@@ -34,20 +34,17 @@ public class TriggerGenericAction : MonoBehaviour
     public bool useTriggerRotation;
     [Tooltip("Destroy this TriggerAction after press the input or do the auto action")]
     public bool destroyAfter = false;
-    [Tooltip("Check if is Weapon or Something else")]
+    [Tooltip("Check if it is Weapon or Something else")]
     public bool isWeapon;
-    [Tooltip("Check if is Bow weapon or not")]
-    public bool IsBowWeapon;
-    [Tooltip("Check if is Rifle weapon or not")]
-    public bool IsRifleWeapon;
-    [Tooltip("Check if is Melee weapon or not")]
-    public bool IsMeleeWeapon;
+    [Tooltip("Check if it is ProjectileWeapon or not")]
+    public bool ProjectileWeapon;
+    [Tooltip("Check if it is Melee weapon or not")]
+    public bool MeleeWeapon;
     [Tooltip("Delay to destroy the TriggerAction")]
     public float destroyDelay = 0f;
     [Tooltip("Delay to run the OnDoAction Event")]
     public float onDoActionDelay;
-    [Tooltip("Assign Weapon from WeaponListData")]
-    public ItemListData itemListData;
+ 
 
     public UnityEvent OnDoAction;
     public OnDoActionWithTarget onDoActionWithTarget;

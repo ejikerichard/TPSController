@@ -46,8 +46,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.6656404, y: 0.3119192, z: 1.3275166}
-  m_Center: {x: 0.06739411, y: 0.2464957, z: 0.57162666}
+  m_Size: {x: 0.49549302, y: 0.31191924, z: 1.3275166}
+  m_Center: {x: 0.15246777, y: 0.11, z: 0.57162666}
 --- !u!114 &8258458049147414262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,12 +75,10 @@ MonoBehaviour:
   useTriggerRotation: 0
   destroyAfter: 1
   isWeapon: 1
-  IsBowWeapon: 0
-  IsRifleWeapon: 1
-  IsMeleeWeapon: 0
+  ProjectileWeapon: 1
+  MeleeWeapon: 0
   destroyDelay: 0.9
   onDoActionDelay: 0
-  itemListData: {fileID: 11400000, guid: bfed8e569daeb8044872eeb4cc00d9d2, type: 2}
   OnDoAction:
     m_PersistentCalls:
       m_Calls: []
@@ -105,7 +103,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8258458049346446122}
-  - component: {fileID: 656211367}
+  - component: {fileID: 6837834335396059150}
   m_Layer: 0
   m_Name: Rifle
   m_TagString: Untagged
@@ -129,7 +127,7 @@ Transform:
   m_Father: {fileID: 8258458049147414261}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &656211367
+--- !u!114 &6837834335396059150
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,14 +136,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 8258458049346446121}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd495954943aea847a185d31813d95e8, type: 3}
+  m_Script: {fileID: 11500000, guid: b98018a8f4516e742a242b521566e73b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: bfed8e569daeb8044872eeb4cc00d9d2, type: 2}
+  myObject: {fileID: 8258458049346446121}
   userSettings:
     equipedHand: 0
-  equipped: 0
   owner: {fileID: 0}
-  trigger: {fileID: 7564242089701253241}
+  inventory: {fileID: 0}
+  equipped: 0
+  IsProjectileWeapon: 0
+  IsMeleeWeapon: 0
 --- !u!1 &8258458049416588472
 GameObject:
   m_ObjectHideFlags: 0

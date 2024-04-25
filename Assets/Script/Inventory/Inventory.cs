@@ -4,42 +4,40 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    #region Singleton
+    [SerializeField] public Weapon[] weapons;
 
-    public delegate void OnItemChanged();
-    public OnItemChanged onItemChangedCallBack;
 
-    public int spaceSlot;
-
-    public static Inventory Instance;
-
-    public void Awake(){
-
-        if(Instance != null){
-            Debug.Log("InventoryManager is Destoryed");
-        }
-
-        Instance = this;
+    private void Start(){
+        InitVariables();
     }
-    #endregion
-
-    public ItemListData slotOne;
-    public ItemListData slotTwo;
-
-    public void AddItem(ItemListData itemListData){
-
-
-        if (itemListData.isDefaultWeapon){
-            slotOne = itemListData;
-        }
-        else if(!itemListData.isDefaultWeapon){
-            if(slotTwo == null){
-                slotTwo = itemListData;
+    public void AddItem(Weapon newItem){
+        //int newItemIndex = (int)newItem.weaponCatagory;
+        //Debug.Log(newItem.weaponCatagory);
+        //if(weapons[newItemIndex] != null) {
+        //    RemoveItem(newItemIndex);
+        //}
+        //weapons[newItemIndex] = newItem;
+        for(int i=0; i < weapons.Length; i++){
+            if(weapons[i] == null){
+                weapons[i] = newItem;
+                break;
+                Debug.Log("not here");
             }
-            else if(slotTwo != null){
-                slotTwo = null;
-                slotTwo = itemListData;
+            else{
+                Debug.Log("Not empty");
             }
         }
+
+    }
+    public void RemoveItem(int index){
+        weapons[index] = null;
+    }
+
+    public Weapon GetItem(int Index){
+        return weapons[Index];
+    }
+    void InitVariables()
+    {
+        weapons = new Weapon[2];
     }
 }

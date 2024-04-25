@@ -20,6 +20,7 @@ public class UserInput : MonoBehaviour
     {
         public string verticalAxis = "Vertical";
         public string horizontalAxis = "Horizontal";
+        public string scrollWheel = "Mouse ScrollWheel";
         public int mouseButtonZero = 0;
         public int mouseButtonOne = 1;
         public int mouseButtonTwo = 2;
@@ -58,7 +59,7 @@ public class UserInput : MonoBehaviour
             return;
 
         if (Input.GetKeyDown(input.rightShift)){
-            weaponHandler.SwitchWeapons();
+            StartCoroutine(weaponHandler.SwitchWeapons());
             Debug.Log("amount");
         }
     }

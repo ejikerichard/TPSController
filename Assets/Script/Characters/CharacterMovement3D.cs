@@ -18,11 +18,15 @@ public class CharacterMovement3D : GenericBehaviour
     [SerializeField]
     public float walkSpeed = 0.15f;
     public float runSpeed = 1.0f;
+    public float walk_MoveSpeed;
+    public float run_MoveSpeed;
     private float forward;
     private float strafe;
+    public float moveSpeedSeeker;
     public float speed;
     public float speeDampTime;
     public float speedSeeker;
+    public float moveSpeed;
 
 
     void Start(){
@@ -42,18 +46,41 @@ public class CharacterMovement3D : GenericBehaviour
         GroundCheck();
     }
 
+    void Move(float vertical, float horizontal){
+        Vector3 forward = behaviourController.camTransform.TransformDirection(Vector3.forward);
+
+        // Player is moving on ground, Y component of camera facing is not relevant.
+        forward.y = 0.0f;
+        forward = forward.normalized;
+
+        // Calculate target direction based on camera forward and direction key.
+        Vector3 right = new Vector3(forward.z, 0, -forward.x);
+        Vector3 targetDirection;
+        targetDirection = forward * vertical + right * horizontal;
+
+        behaviourController.mybody.velocity = targetDirection * moveSpeed;
+
+    }
+
 
     #region Animations
 
+    private void OnAnimatorMove()
+    {
+        Move(Input.GetAxis(UserInput.Instance.input.verticalAxis), Input.GetAxis(UserInput.Instance.input.horizontalAxis));
+    }
     public void Animate(float horizontal, float vertical){
 
         Rotating(horizontal, vertical);
 
         Vector2 dir = new Vector2(horizontal, vertical);
         speed = Vector2.ClampMagnitude(dir, 1f).magnitude;
-        speedSeeker += Input.GetAxis("Mouse ScrollWheel");
+        speedSeeker += Input.GetAxis(UserInput.Instance.input.scrollWheel);
+        moveSpeedSeeker += Input.GetAxis(UserInput.Instance.input.scrollWheel)* 2f;
         speedSeeker = Mathf.Clamp(speedSeeker, walkSpeed, runSpeed);
+        moveSpeedSeeker = Mathf.Clamp(moveSpeedSeeker, walk_MoveSpeed, run_MoveSpeed);
         speed *= speedSeeker;
+        moveSpeed = moveSpeedSeeker;
 
 
         if(!isCrouch){
@@ -82,16 +109,16 @@ public class CharacterMovement3D : GenericBehaviour
     }
 
     void GroundCheck(){
-        if(behaviourController.customAction != true){
-            behaviourController.GetAnimator.SetFloat(distanceFloat, behaviourController.groundDistance);
-        }
+        //if(behaviourController.customAction != true){
+        //    behaviourController.GetAnimator.SetFloat(distanceFloat, behaviourController.groundDistance);
+        //}
 
-        if(behaviourController.isGrounded && behaviourController.customAction != true){
-            behaviourController.GetAnimator.SetBool(groundedBool, behaviourController.isGrounded);
-        }
-        else if(!behaviourController.isGrounded && behaviourController.customAction != true){
-            behaviourController.GetAnimator.SetBool(groundedBool, behaviourController.isGrounded);
-        }
+        //if(behaviourController.isGrounded && behaviourController.customAction != true){
+        //    behaviourController.GetAnimator.SetBool(groundedBool, behaviourController.isGrounded);
+        //}
+        //else if(!behaviourController.isGrounded && behaviourController.customAction != true){
+        //    behaviourController.GetAnimator.SetBool(groundedBool, behaviourController.isGrounded);
+        //}
     }
     #endregion
 
@@ -130,25 +157,25 @@ public class CharacterMovement3D : GenericBehaviour
 
     #region TriggerChecker
     void OnTriggerEnter(Collider other){
-        if(other.gameObject.CompareTag(crouchTag)){
-            isCrouch = true;    
-        }
+    //    if(other.gameObject.CompareTag(crouchTag)){
+    //        isCrouch = true;    
+    //    }
 
-        if(other.gameObject.CompareTag("CombatArena")){
-            states.locomotions = CharacterStates.Locomotions.CombatLocomotion;
-        }
-    }
-    void OnTriggerStay(Collider other){
-        if(other.gameObject.CompareTag(crouchTag)){
-            isCrouch = true;
-        }
-        if(other.gameObject.CompareTag("CombatArena")){
-            states.locomotions = CharacterStates.Locomotions.CombatLocomotion;
-        }
-    }
-    void OnTriggerExit(Collider other){
-        isCrouch = false;
-        states.locomotions = CharacterStates.Locomotions.FreeLocomotion;
+    //    if(other.gameObject.CompareTag("CombatArena")){
+    //        states.locomotions = CharacterStates.Locomotions.CombatLocomotion;
+    //    }
+    //}
+    //void OnTriggerStay(Collider other){
+    //    if(other.gameObject.CompareTag(crouchTag)){
+    //        isCrouch = true;
+    //    }
+    //    if(other.gameObject.CompareTag("CombatArena")){
+    //        states.locomotions = CharacterStates.Locomotions.CombatLocomotion;
+    //    }
+    //}
+    //void OnTriggerExit(Collider other){
+    //    isCrouch = false;
+    //    states.locomotions = CharacterStates.Locomotions.FreeLocomotion;
     }
     #endregion
 }

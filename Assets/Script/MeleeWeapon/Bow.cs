@@ -39,32 +39,32 @@ public class Bow : MonoBehaviour
 	}
 	
 	void Update(){
-        if(owner){
-            if(equipped){
-                if(owner.userSettings.LeftequipHand){
-                    Equip();
-                }
-            }else{
-                Unequip();
-            }
-        }else{
-            //transform.SetParent(null);
-        }
+        //if(owner){
+        //    if(equipped){
+        //        if(owner.userSettings.LeftequipHand){
+        //            Equip();
+        //        }
+        //    }else{
+        //        Unequip();
+        //    }
+        //}else{
+        //    //transform.SetParent(null);
+        //}
 
         FireArrow();
 	}
 
     void Equip(){
 
-        if (!owner)
-            return;
-        else if (!owner.userSettings.LeftequipHand)
-            return;
+        //if (!owner)
+        //    return;
+        //else if (!owner.userSettings.LeftequipHand)
+        //    return;
 
-        transform.SetParent(owner.userSettings.LeftequipHand);
-        transform.position = owner.userSettings.LeftequipHand.position;
-        transform.rotation = owner.userSettings.LeftequipHand.rotation;
-        userSettings.equipedHand = true;
+        //transform.SetParent(owner.userSettings.LeftequipHand);
+        //transform.position = owner.userSettings.LeftequipHand.position;
+        //transform.rotation = owner.userSettings.LeftequipHand.rotation;
+        //userSettings.equipedHand = true;
     }
 
     void Unequip(){
@@ -72,9 +72,9 @@ public class Bow : MonoBehaviour
         if (!owner)
             return;
 
-        transform.SetParent(owner.userSettings.UnequipSpot);
-        transform.position = owner.userSettings.UnequipSpot.position;
-        transform.rotation = owner.userSettings.UnequipSpot.rotation;
+        //transform.SetParent(owner.userSettings.UnequipSpot);
+        //transform.position = owner.userSettings.UnequipSpot.position;
+        //transform.rotation = owner.userSettings.UnequipSpot.rotation;
     }
 
     public void SetEquipped(bool equip){

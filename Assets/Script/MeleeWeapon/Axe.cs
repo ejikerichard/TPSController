@@ -27,7 +27,6 @@ public class Axe : MonoBehaviour
     public bool droped, reCreate, WeaponDrop;
 
     public WeaponHandler owner;
-    public ItemListData itemListData;
     public BoxCollider trigger;
     public BoxCollider weaponBox;
 
@@ -38,34 +37,34 @@ public class Axe : MonoBehaviour
 
     void Update(){
 
-        if(owner){
+        //if(owner){
 
-            if(equipped){
+        //    if(equipped){
 
-                if(owner.userSettings.RightequipHand){
-                    Equip();
-                }
-            }else{
-                Unequip();
-            }
-        }else{
-            //transform.SetParent(null);
-        }
+        //        if(owner.userSettings.RightequipHand){
+        //            Equip();
+        //        }
+        //    }else{
+        //        Unequip();
+        //    }
+        //}else{
+        //    //transform.SetParent(null);
+        //}
 
         DropWeapon();
     }
 
     void Equip(){
 
-        if (!owner)
-            return;
-        else if (!owner.userSettings.RightequipHand)
-            return;
+        //if (!owner)
+        //    return;
+        //else if (!owner.userSettings.RightequipHand)
+        //    return;
 
-        transform.SetParent(owner.userSettings.RightequipHand);
-        transform.position = owner.userSettings.RightequipHand.position;
-        transform.rotation = owner.userSettings.RightequipHand.rotation;
-        userSettings.equipedHand = true;
+        //transform.SetParent(owner.userSettings.RightequipHand);
+        //transform.position = owner.userSettings.RightequipHand.position;
+        //transform.rotation = owner.userSettings.RightequipHand.rotation;
+        //userSettings.equipedHand = true;
     }
 
     void Unequip(){
@@ -74,8 +73,8 @@ public class Axe : MonoBehaviour
             return;
 
         transform.SetParent(null);
-        transform.position = owner.userSettings.UnequipSpot.position;
-        transform.rotation = owner.userSettings.UnequipSpot.rotation;
+        //transform.position = owner.userSettings.UnequipSpot[0].position;
+        //transform.rotation = owner.userSettings.UnequipSpot[0].rotation;
     }
 
     public void SetEquipped(bool equip){
@@ -135,8 +134,7 @@ public class Axe : MonoBehaviour
         triggerAction.useTriggerRotation = false;
         triggerAction.destroyAfter = true;
         triggerAction.isWeapon = true;
-        triggerAction.IsMeleeWeapon = true;
+        triggerAction.MeleeWeapon = true;
         triggerAction.destroyDelay = 0.9f;
-        triggerAction.itemListData = itemListData;
     }
 }

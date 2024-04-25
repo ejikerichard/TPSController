@@ -181,20 +181,20 @@ public class BehaviourController : MonoBehaviour
         customAction = IsAnimatorTag("CustomAction");
 
         if(customAction){
-            Debug.Log("ClimbUp");
+          //  Debug.Log("ClimbUp");
         }
 
-        if(WeaponHandler.Instance.isAiming){
-            if(isShooting){
-                Bow.Instance.arrow.SetActive(false);
-            }
-            else if(!isShooting){
-                Bow.Instance.arrow.SetActive(true);
-            }
-        }
-        else if(!WeaponHandler.Instance.isAiming){
-            Bow.Instance.arrow.SetActive(false);
-        }
+        //if(WeaponHandler.Instance.isAiming){
+        //    if(isShooting){
+        //        Bow.Instance.arrow.SetActive(false);
+        //    }
+        //    else if(!isShooting){
+        //        Bow.Instance.arrow.SetActive(true);
+        //    }
+        //}
+        //else if(!WeaponHandler.Instance.isAiming){
+        //    Bow.Instance.arrow.SetActive(false);
+        //}
     }
 
     public void CheckGround(){

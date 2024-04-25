@@ -17,6 +17,7 @@ public class GenericAction : MonoBehaviour
 
     [Header("--- Debug Only ---")]
     public TriggerGenericAction triggerAction;
+    private Inventory inventory; 
     [Tooltip("Check this to enter the debug mode")]
     public bool debugMode;
     public bool canTriggerAction;
@@ -35,6 +36,7 @@ public class GenericAction : MonoBehaviour
     protected virtual void Start(){
         behaviourController = GetComponent<BehaviourController>();
         userInput = GetComponent<UserInput>();
+        inventory = GetComponent<Inventory>();
     }
 
     void Update(){
@@ -66,27 +68,24 @@ public class GenericAction : MonoBehaviour
                     if(WeaponHandler.Instance.isAiming != true){
                         TriggerAnimation();
 
-                        if(triggerAction.IsBowWeapon && !WeaponHandler.Instance.IsBowPicked){
-                            WeaponHandler.Instance.IsBowPicked = true;
+                        if(triggerAction.ProjectileWeapon && !triggerAction.transform.GetChild(0).GetComponent<WeaponItemManager>().IsProjectileWeapon){
+                            Weapon newItem = triggerAction.transform.GetChild(0).GetComponent<WeaponItemManager>().item as Weapon;
+                            newItem.prefab = triggerAction.transform.GetChild(0).gameObject;
+                            inventory.AddItem(newItem);
+                            triggerAction.transform.GetChild(0).GetComponent<WeaponItemManager>().IsProjectileWeapon = true;
                         }else{
 
                             Debug.Log("Picked a bow before");
                         }
 
-                        if(triggerAction.IsRifleWeapon && !WeaponHandler.Instance.IsRiflePicked){
-                            WeaponHandler.Instance.IsRiflePicked = true;
-                        }else{
-                            Debug.Log("Picked a rifle before");
+                        if(triggerAction.MeleeWeapon && !triggerAction.transform.GetChild(0).GetComponent<WeaponItemManager>().IsMeleeWeapon){
+                            Weapon newItem = triggerAction.transform.GetChild(0).GetComponent<WeaponItemManager>().item as Weapon;
+                            newItem.prefab = triggerAction.transform.GetChild(0).gameObject;
+                            inventory.AddItem(newItem);
+                            triggerAction.transform.GetChild(0).GetComponent<WeaponItemManager>().IsMeleeWeapon = true;
                         }
-
-                        if(triggerAction.IsMeleeWeapon && !WeaponHandler.Instance.IsMeleePicked){
-                            WeaponHandler.Instance.IsMeleePicked = true;
-                        }else{
+                        else{
                             Debug.Log("Picked a melee weapon before");
-                        }
-
-                        if(triggerAction.isWeapon){
-                            Inventory.Instance.AddItem(triggerAction.itemListData);
                         }
                     }
                     // destroy the triggerAction if checked with destroyAfter

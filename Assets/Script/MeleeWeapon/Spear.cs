@@ -26,7 +26,6 @@ public class Spear : MonoBehaviour
     public bool Used, droped, reCreate, WeaponDrop;
 
     public WeaponHandler owner;
-    public ItemListData itemListData;
     public BoxCollider trigger;
     public BoxCollider weaponBox;
 
@@ -36,35 +35,35 @@ public class Spear : MonoBehaviour
 
     void Update(){
 
-        if(owner){
+        //if(owner){
 
-            if(equipped){
+        //    if(equipped){
 
-                if(owner.userSettings.SpearEquipHand){
-                    Equip();
-                }
-            }
-            else{
-                Unequip();
-            }
-        }else{
-            //transform.SetParent(null);
-        }
+        //        if(owner.userSettings.SpearEquipHand){
+        //            Equip();
+        //        }
+        //    }
+        //    else{
+        //        Unequip();
+        //    }
+        //}else{
+        //    //transform.SetParent(null);
+        //}
 
         DropWeapon();
     }
 
     void Equip(){
 
-        if (!owner)
-            return;
-        else if (!owner.userSettings.SpearEquipHand)
-            return;
+        //if (!owner)
+        //    return;
+        //else if (!owner.userSettings.SpearEquipHand)
+        //    return;
 
-        transform.parent = owner.userSettings.SpearEquipHand.transform;
-        transform.position = owner.userSettings.SpearEquipHand.position;
-        transform.rotation = owner.userSettings.SpearEquipHand.rotation;
-        userSettings.equipedHand = true;
+        //transform.parent = owner.userSettings.SpearEquipHand.transform;
+        //transform.position = owner.userSettings.SpearEquipHand.position;
+        //transform.rotation = owner.userSettings.SpearEquipHand.rotation;
+        //userSettings.equipedHand = true;
     }
 
     void Unequip(){
@@ -73,8 +72,8 @@ public class Spear : MonoBehaviour
             return;
 
         transform.SetParent(null);
-        transform.position = owner.userSettings.UnequipSpot.position;
-        transform.rotation = owner.userSettings.UnequipSpot.rotation;
+        //transform.position = owner.userSettings.UnequipSpot.position;
+        //transform.rotation = owner.userSettings.UnequipSpot.rotation;
     }
 
     public void SetEquipped(bool equip){
@@ -136,8 +135,7 @@ public class Spear : MonoBehaviour
         triggerAction.useTriggerRotation = false;
         triggerAction.destroyAfter = true;
         triggerAction.isWeapon = true;
-        triggerAction.IsMeleeWeapon = true;
+        triggerAction.MeleeWeapon = true;
         triggerAction.destroyDelay = 0.9f;
-        triggerAction.itemListData = itemListData;
     }
 }
