@@ -38,6 +38,6 @@ public class Inventory : MonoBehaviour
     }
     void InitVariables()
     {
-        weapons = new Weapon[2];
+        weapons = new Weapon[3];
     }
 }

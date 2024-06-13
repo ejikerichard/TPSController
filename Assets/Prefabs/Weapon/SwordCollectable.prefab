@@ -109,6 +109,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 32f2eab629e959b4099ed9163bde73f2, type: 2}
   myObject: {fileID: 1491601212577200}
+  meleeWeapons_Properties:
+    droped: 0
+    reCreate: 0
+    WeaponDrop: 0
+    owner: {fileID: 0}
+    trigger: {fileID: 0}
+    weaponBox: {fileID: 65781533193066964}
   userSettings:
     equipedHand: 0
   owner: {fileID: 0}

@@ -64,27 +64,6 @@ public class WeaponHandler : MonoBehaviour
 
         Animate();
     }
-
-    //public void SwitchWeapons() {
-
-    //   // if(currentWeapon == null && weaponType <= 0 && inventory.weapons[0] != null && inventory.weapons[0].weaponType == Weapon.WeaponType.Pistol){
-    //   //     currentWeapon = inventory.weapons[0].prefab;
-    //   //     currentWeapon.GetComponent<WeaponItemManager>().equipped = true;
-    //   //     weaponType += 1;
-    //   // }
-    //   // else if (currentWeapon == null && weaponType <= 0 && inventory.weapons[0] != null && inventory.weapons[0].weaponType == Weapon.WeaponType.Rifle){
-    //   //     currentWeapon = inventory.weapons[0].prefab;
-    //   //     currentWeapon.GetComponent<WeaponItemManager>().equipped = true;
-    //   //     weaponType += 1;
-    //   // }
-
-    //   //else if(currentWeapon != null && weaponType == 1 && inventory.weapons[1] != null){
-    //   //     //currentWeapon.GetComponent<WeaponItemManager>().enabled = false;
-    //   //     currentWeapon = inventory.weapons[1].prefab;
-    //   //     weaponType += 1;
-    //   // }
-    //}
-
     public IEnumerator SwitchWeapons(){
 
         yield return new WaitForSeconds(0.1f);
@@ -108,7 +87,8 @@ public class WeaponHandler : MonoBehaviour
             currentWeapon.GetComponent<WeaponItemManager>().equipped = true;
             weaponType += 1;
         }
-        else if(currentWeapon != null && currentWeapon.name == inventory.weapons[1].name && weaponType == 2){
+
+        else if (currentWeapon != null && currentWeapon.name == inventory.weapons[1].name && weaponType == 2){
             currentWeapon.GetComponent<WeaponItemManager>().equipped = false;
             weaponType = 0;
             currentWeapon = null;
