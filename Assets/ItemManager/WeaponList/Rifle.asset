@@ -15,5 +15,5 @@ MonoBehaviour:
   name: Rifle
   image: {fileID: 0}
   prefab: {fileID: 0}
-  weaponType: 2
+  weaponType: 3
   weaponCatagory: 0

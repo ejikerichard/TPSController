@@ -410,6 +410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98018a8f4516e742a242b521566e73b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponTypes: 3
   item: {fileID: 11400000, guid: a3f1a28285ab5544fabfd72ab785c58d, type: 2}
   myObject: {fileID: 1517353008495900}
   meleeWeapons_Properties:

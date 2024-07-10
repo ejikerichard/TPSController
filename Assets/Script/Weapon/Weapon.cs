@@ -10,7 +10,7 @@ public class Weapon : Items
     public WeaponType weaponType;
     public WeaponCatagories weaponCatagory;
 
-    public enum WeaponType { Melee, Pistol, Rifle}
+    public enum WeaponType { Axe, Sword, Pistol, Rifle}
     public enum WeaponCatagories { Primary, Secondary, Melee}
 
 }

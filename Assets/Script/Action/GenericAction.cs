@@ -43,20 +43,6 @@ public class GenericAction : MonoBehaviour
         TriggerActionInput();
 
     }
-
-    //void OnAnimatorMove()
-    //{
-    //    AnimationBehaviour();
-
-    //    if (!playingAnimation) return;
-    //    if (!character.customAction)
-    //    {
-    //        //enable movement using root motion
-    //        transform.rotation = character.animator.rootRotation;
-    //    }
-    //    transform.position = character.animator.rootPosition;
-    //}
-
     protected virtual void TriggerActionInput(){
 
         if(triggerAction == null) return;
@@ -75,17 +61,21 @@ public class GenericAction : MonoBehaviour
                             triggerAction.transform.GetChild(0).GetComponent<WeaponItemManager>().IsProjectileWeapon = true;
                         }else{
 
-                            Debug.Log("Picked a bow before");
+                            //Debug.Log("Picked a bow before");
                         }
 
-                        if(triggerAction.MeleeWeapon && !triggerAction.transform.GetChild(0).GetComponent<WeaponItemManager>().IsMeleeWeapon){
+                        if(triggerAction.MeleeWeapon && !triggerAction.transform.GetChild(0).GetComponent<WeaponItemManager>().IsMeleeWeapon && inventory.weapons[0] == null |
+                            triggerAction.MeleeWeapon && !triggerAction.transform.GetChild(0).GetComponent<WeaponItemManager>().IsMeleeWeapon && inventory.weapons[1] == null |
+                            triggerAction.MeleeWeapon && !triggerAction.transform.GetChild(0).GetComponent<WeaponItemManager>().IsMeleeWeapon && inventory.weapons[2] == null){
+
                             Weapon newItem = triggerAction.transform.GetChild(0).GetComponent<WeaponItemManager>().item as Weapon;
                             newItem.prefab = triggerAction.transform.GetChild(0).gameObject;
                             inventory.AddItem(newItem);
                             triggerAction.transform.GetChild(0).GetComponent<WeaponItemManager>().IsMeleeWeapon = true;
+                            WeaponHandler.Instance.meleeSwitching = true;
                         }
                         else{
-                            Debug.Log("Picked a melee weapon before");
+                            //Debug.Log("Picked a melee weapon before");
                         }
                     }
                     // destroy the triggerAction if checked with destroyAfter
@@ -136,6 +126,12 @@ public class GenericAction : MonoBehaviour
         isPlayingAnimation = false;
     }
 
+    protected virtual bool IsInForward(Transform target)
+    {
+        var dist = Vector3.Distance(transform.forward, target.forward);
+        return dist <= 0.8f;
+    }
+
     protected virtual void AnimationBehaviour(){
 
         if(playingAnimation){
@@ -145,7 +141,7 @@ public class GenericAction : MonoBehaviour
                 if (debugMode) Debug.Log("Match Target...");
                 // use match target to match the y and z target 
                 behaviourController.MatchTarget(triggerAction.matchTarget.transform.position, triggerAction.matchTarget.transform.rotation, triggerAction.avatarTarget,
-                    new MatchTargetWeightMask(triggerAction.matchTargetMask, 0), triggerAction.startMatchTarget, triggerAction.endMatchTarget);
+                    new MatchTargetWeightMask(triggerAction.matchTargetMask, triggerAction.matchRot), triggerAction.startMatchTarget, triggerAction.endMatchTarget);
                 if (triggerAction.disableCollision && triggerAction.disableGravity){
                     behaviourController.DisableGravityAndCollision();
                 }
@@ -225,13 +221,14 @@ public class GenericAction : MonoBehaviour
         var _triggerAction = other.GetComponent<TriggerGenericAction>();
         if (!_triggerAction) return;
 
-        var dist = Vector3.Distance(transform.forward, _triggerAction.transform.forward);
+        //var dist = Vector3.Distance(transform.forward, _triggerAction.transform.forward);
 
-        if(!_triggerAction.activeFromForward || dist <= 0.8f){
+        if(IsInForward(_triggerAction.transform)){
 
             triggerAction = _triggerAction;
             canTriggerAction = true;
             Ismatching = true;
+            Debug.Log("matchtargeting");
             //triggerAction.OnPlayerEnter.Invoke();
         }else{
 

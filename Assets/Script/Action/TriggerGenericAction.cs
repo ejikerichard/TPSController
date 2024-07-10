@@ -22,6 +22,8 @@ public class TriggerGenericAction : MonoBehaviour
     public AvatarTarget avatarTarget;
     [Tooltip("Check what position XYZ you want the matchTarget to work")]
     public Vector3 matchTargetMask;
+    [Range(0, 1f)]
+    public float matchRot;
     [Tooltip("Use a transform to help the character climb any height, take a look at the Example Scene ClimbUp, StepUp, JumpOver objects.")]
     public Transform matchTarget;
     [Tooltip("Start the match target of the animation")]

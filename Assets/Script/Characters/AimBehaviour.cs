@@ -2,50 +2,57 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AimBehaviour : GenericBehaviour{
-        public UserInput userInput { get; protected set; }
+public class AimBehaviour : GenericBehaviour
+{
+    public UserInput userInput { get; protected set; }
 
-        [SerializeField]
-        public string VerticalVelocity = "VerticalInput";
-        public string HorizontalVelocity = "HorizontalInput";
-        public string strafeBool = "IsStrafing";
-        public string crouchBool = "IsCrouching";
-        public string moveBool = "Moving";
-        public string crouchTag = "AutoCrouch";
-        public bool isStrafing;
-        public bool SpearStrafing;
-        public bool isCrouching;
+    [SerializeField]
+    public string VerticalVelocity = "VerticalInput";
+    public string HorizontalVelocity = "HorizontalInput";
+    public string strafeBool = "IsStrafing";
+    public string crouchBool = "IsCrouching";
+    public string moveBool = "Moving";
+    public string crouchTag = "AutoCrouch";
+    public string pistolWalk = "PistolWalk";
+    public string rifleWalk = "RifleWalk";
+    public bool isStrafing;
+    public bool SpearStrafing;
+    public bool isCrouching;
 
-        [SerializeField]
-        public float aimTurnSmoothing = 0.15f;
-        public Vector3 aimPivotOffset = new Vector3(0, 1, 0);
-        public Vector3 aimCamOffset = new Vector3(0.52f, 0.55f, -0.89f);
-        public Vector3 crouchaimCamOffset = new Vector3(0.5f, 0.2f, -1.1f);
+    [SerializeField]
+    public float aimTurnSmoothing = 0.15f;
+    public Vector3 aimPivotOffset = new Vector3(0, 1, 0);
+    public Vector3 aimCamOffset = new Vector3(0.52f, 0.55f, -0.89f);
+    public Vector3 crouchaimCamOffset = new Vector3(0.5f, 0.2f, -1.1f);
 
-        public Transform lockTarget;
+    public Transform lockTarget;
 
-        public bool aim;
-        public float speedDamp;
+    public bool aim;
+    public float speed;
+    public float speedDampTime;
+    public int walkSpeed;
+    public int runSpeed;
+    public float speedSeeker;
 
-        Dictionary<Weapon, GameObject> crosshairPrefabMap = new Dictionary<Weapon, GameObject>();
+    Dictionary<Weapon, GameObject> crosshairPrefabMap = new Dictionary<Weapon, GameObject>();
 
-        void Start(){
-            Init();
-        }
+    void Start(){
+        Init();
+    }
 
-        void Init(){
-            userInput = GetComponent<UserInput>();
-            SetupCrosshairs();
-        }
-        void SetupCrosshairs(){
-            //foreach(Weapon wep in weaponHandler.weapons){
-            //GameObject prefab = wep.weaponSettings.crosshairPrefab;
-            //if (prefab != null){
+    void Init(){
+        userInput = GetComponent<UserInput>();
+        SetupCrosshairs();
+    }
+    void SetupCrosshairs(){
+        //foreach(Weapon wep in weaponHandler.weapons){
+        //GameObject prefab = wep.weaponSettings.crosshairPrefab;
+        //if (prefab != null){
 
-            //    GameObject clone = (GameObject)Instantiate(prefab);
-            //    crosshairPrefabMap.Add(wep, clone);
-            //}
-        }
+        //    GameObject clone = (GameObject)Instantiate(prefab);
+        //    crosshairPrefabMap.Add(wep, clone);
+        //}
+    }
     void Update(){
 
         if(WeaponHandler.Instance.isAiming && !aim){
@@ -55,7 +62,7 @@ public class AimBehaviour : GenericBehaviour{
             StartCoroutine(ToggleAimOff());
         }
 
-        if (isStrafing){
+        if(isStrafing){
             behaviourController.GetAnimator.SetBool(strafeBool, isStrafing);
         }
         else if(!isStrafing){
@@ -67,7 +74,7 @@ public class AimBehaviour : GenericBehaviour{
                 behaviourController.GetAnimator.SetBool(crouchBool, isCrouching);
                 behaviourController.GetCameraRig.SetTargetOffsets(aimPivotOffset, crouchaimCamOffset);
             }
-            else if (!isCrouching){
+            else if(!isCrouching){
                 behaviourController.GetAnimator.SetBool(crouchBool, isCrouching);
                 behaviourController.GetCameraRig.SetTargetOffsets(aimPivotOffset, aimCamOffset);
             }
@@ -76,19 +83,20 @@ public class AimBehaviour : GenericBehaviour{
     void FixedUpdate(){
         Animate(behaviourController.GetV, behaviourController.GetH);
         MoveController(behaviourController.GetV, behaviourController.GetH);
-    }
-    public override void LocalLateUpdate(){
 
-        AimManagement();
         if(aim){
             userInput.OnLateUpdate.Invoke();
         }
+    }
+    public void LateUpdate(){
+        AimManagement();
     }
 
     // Handle aim parameters when aiming is active.
     void AimManagement(){
         // Deal with the player orientation when aiming.
-        Rotating();
+        if (aim)
+            Rotating();
     }
 
     void Animate(float forward, float strafe){
@@ -96,6 +104,15 @@ public class AimBehaviour : GenericBehaviour{
         behaviourController.GetAnimator.SetFloat(VerticalVelocity, forward);
         behaviourController.GetAnimator.SetFloat(HorizontalVelocity, strafe);
 
+        Vector2 dir = new Vector2(strafe, forward);
+        speed = Vector2.ClampMagnitude(dir, 1f).magnitude;
+
+        speedSeeker += Input.GetAxis(UserInput.Instance.input.scrollWheel);
+        speedSeeker = Mathf.Clamp(speedSeeker, walkSpeed, runSpeed);
+        speed *= speedSeeker;
+
+        behaviourController.GetAnimator.SetInteger(pistolWalk, (int)speed);
+        behaviourController.GetAnimator.SetInteger(rifleWalk, (int)speed);
     }
 
     void MoveController(float vertical, float horizontal){
@@ -104,7 +121,8 @@ public class AimBehaviour : GenericBehaviour{
         }
         else if(vertical < 0 || horizontal < 0){
             behaviourController.GetAnimator.SetBool(moveBool, true);
-        }else{
+        }
+        else{
             behaviourController.GetAnimator.SetBool(moveBool, false);
         }
     }
@@ -153,13 +171,17 @@ public class AimBehaviour : GenericBehaviour{
         forward = forward.normalized;
 
         // Always rotates the player according to the camera horizontal rotation in aim mode.
-        Quaternion targetRotation = Quaternion.Euler(0, behaviourController.GetCameraRig.GetH, 0);
+        // Quaternion targetRotation = Quaternion.Euler(0, behaviourController.GetCameraRig.GetH, 0);
 
-        float minSpeed = Quaternion.Angle(transform.rotation, targetRotation) * aimTurnSmoothing;
+        Vector3 targetDirection;
+        targetDirection = forward;
 
-        // Rotate entire player to face camera.
-        behaviourController.SetLastDirection(forward);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, minSpeed * Time.deltaTime);
+        transform.forward = targetDirection * aimTurnSmoothing* Time.time;
+
+        //// Rotate entire player to face camera.
+        behaviourController.SetLastDirection(targetDirection);
+        //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, minSpeed);
+
     }
 
     void PositionCrosshair(Ray ray, Weapon wep){
@@ -217,17 +239,22 @@ public class AimBehaviour : GenericBehaviour{
     //}
 
     #region Trigger Checks
-    void OnTriggerEnter(Collider other){
-        if(other.gameObject.CompareTag(crouchTag)){
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag(crouchTag))
+        {
             isCrouching = true;
         }
     }
-    void OnTriggerStay(Collider other){
-        if(other.gameObject.CompareTag(crouchTag)){
+    void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag(crouchTag))
+        {
             isCrouching = true;
         }
     }
-    void OnTriggerExit(Collider other){
+    void OnTriggerExit(Collider other)
+    {
         isCrouching = false;
     }
     #endregion

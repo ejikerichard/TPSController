@@ -44,6 +44,8 @@ public class CharacterMovement3D : GenericBehaviour
 
         Animate(behaviourController.GetH, behaviourController.GetV);
         GroundCheck();
+
+        //Move(Input.GetAxis(UserInput.Instance.input.verticalAxis), Input.GetAxis(UserInput.Instance.input.horizontalAxis));
     }
 
     void Move(float vertical, float horizontal){
@@ -61,14 +63,7 @@ public class CharacterMovement3D : GenericBehaviour
         behaviourController.mybody.velocity = targetDirection * moveSpeed;
 
     }
-
-
     #region Animations
-
-    private void OnAnimatorMove()
-    {
-        Move(Input.GetAxis(UserInput.Instance.input.verticalAxis), Input.GetAxis(UserInput.Instance.input.horizontalAxis));
-    }
     public void Animate(float horizontal, float vertical){
 
         Rotating(horizontal, vertical);

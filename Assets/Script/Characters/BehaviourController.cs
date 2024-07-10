@@ -165,7 +165,13 @@ public class BehaviourController : MonoBehaviour
             }
         }
     }
+    //private void OnAnimatorMove()
+    //{
+    //    if (!this.enabled)
+    //        return;
 
+    //    animator.applyRootMotion = true;
+    //}
     public void LayerControl(){
         baseLayerInfo = animator.GetCurrentAnimatorStateInfo(baseLayer);
         underBodyInfo = animator.GetCurrentAnimatorStateInfo(underBodyLayer);

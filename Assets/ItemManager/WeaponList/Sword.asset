@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Sword
   image: {fileID: 0}
-  weaponType: 0
+  prefab: {fileID: 0}
+  weaponType: 1
   weaponCatagory: 2

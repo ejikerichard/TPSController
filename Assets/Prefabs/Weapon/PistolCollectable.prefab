@@ -132,9 +132,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98018a8f4516e742a242b521566e73b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponTypes: 1
   item: {fileID: 11400000, guid: 60aebd36f663f404f986cbc9a1ca958b, type: 2}
   myObject: {fileID: 1558718010491971664}
-  objectName: Pistol
+  meleeWeapons_Properties:
+    droped: 0
+    reCreate: 0
+    WeaponDrop: 0
+    trigger: {fileID: 0}
+    weaponBox: {fileID: 0}
   userSettings:
     equipedHand: 0
   owner: {fileID: 0}

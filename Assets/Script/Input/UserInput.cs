@@ -24,7 +24,8 @@ public class UserInput : MonoBehaviour
         public int mouseButtonZero = 0;
         public int mouseButtonOne = 1;
         public int mouseButtonTwo = 2;
-        public KeyCode rightShift = KeyCode.RightShift;
+        public KeyCode switchButton = KeyCode.E;
+        public KeyCode dropButton = KeyCode.Q;
     }
 
     [SerializeField]
@@ -58,7 +59,7 @@ public class UserInput : MonoBehaviour
         if(!weaponHandler)
             return;
 
-        if (Input.GetKeyDown(input.rightShift)){
+        if (Input.GetKeyDown(input.switchButton)){
             StartCoroutine(weaponHandler.SwitchWeapons());
             Debug.Log("amount");
         }

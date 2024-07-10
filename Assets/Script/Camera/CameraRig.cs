@@ -19,6 +19,8 @@ public class CameraRig : MonoBehaviour{
         public Vector3 pivotOffset = new Vector3(0.0f, 1.0f, 0.0f);
         public Vector3 camOffset = new Vector3(0.4f, 0.5f, -2.0f);
         public float Smooth = 10f;
+        public float SmoothTime;
+        public float DampTime;
         public float horizontalAimingSpeed = 6f;
         public float verticalAimingSpeed = 6f;
         public float maxVerticalAngle = 30f;
@@ -35,6 +37,7 @@ public class CameraRig : MonoBehaviour{
         public Vector3 smoothCamOffset;                                   
         public Vector3 targetPivotOffset;                                
         public Vector3 targetCamOffset;
+        public Vector3 VelocityRef;
         public Quaternion aimingRotation;
         public Quaternion normalRotation;
         public float defaultFOV;                                          
@@ -81,12 +84,13 @@ public class CameraRig : MonoBehaviour{
         ResetMaxVerticalAngle();
     }
     void Update(){
-        RotateCamera();
         Zooming(weaponHandler.aim);
+        RotateCamera();
     }
 
     void LateUpdate(){
         occludeRay(ref cameraSetting.camOffset);
+
     }
 
     void RotateCamera(){
@@ -102,7 +106,7 @@ public class CameraRig : MonoBehaviour{
         Quaternion aimRotation = Quaternion.Euler(-cameraSetting.angleV, cameraSetting.angleH, 0);
         cameraSetting.cam.rotation = aimRotation;
 
-        Vector3 baseTemPosition = cameraSetting.target.position + camYRotation * cameraSetting.targetPivotOffset;
+       Vector3 baseTemPosition = cameraSetting.target.position + camYRotation * cameraSetting.targetPivotOffset;
         Vector3 noCollisionOffset = cameraSetting.targetCamOffset;
         for (float zOffset = cameraSetting.targetCamOffset.z; zOffset <= 0; zOffset += 0.5f)
         {
@@ -115,7 +119,8 @@ public class CameraRig : MonoBehaviour{
 
         cameraSetting.smoothPivotOffset = Vector3.Lerp(cameraSetting.smoothPivotOffset, cameraSetting.targetPivotOffset, cameraSetting.Smooth * Time.deltaTime);
         cameraSetting.smoothCamOffset = Vector3.Lerp(cameraSetting.smoothCamOffset, noCollisionOffset, cameraSetting.Smooth * Time.deltaTime);
-        cameraSetting.cam.position = cameraSetting.target.position + camYRotation * cameraSetting.smoothPivotOffset + aimRotation * cameraSetting.smoothCamOffset;
+        cameraSetting.cam.position  = cameraSetting.target.position + camYRotation * cameraSetting.smoothPivotOffset + aimRotation * cameraSetting.smoothCamOffset;
+
     }
 
     public void SetTargetOffsets(Vector3 newPivotOffset, Vector3 newCamOffset){

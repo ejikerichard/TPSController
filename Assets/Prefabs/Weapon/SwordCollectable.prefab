@@ -93,7 +93,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 2
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 1
 --- !u!114 &1509256391845993150
 MonoBehaviour:
@@ -107,13 +107,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98018a8f4516e742a242b521566e73b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponTypes: 2
   item: {fileID: 11400000, guid: 32f2eab629e959b4099ed9163bde73f2, type: 2}
   myObject: {fileID: 1491601212577200}
   meleeWeapons_Properties:
     droped: 0
     reCreate: 0
     WeaponDrop: 0
-    owner: {fileID: 0}
     trigger: {fileID: 0}
     weaponBox: {fileID: 65781533193066964}
   userSettings:

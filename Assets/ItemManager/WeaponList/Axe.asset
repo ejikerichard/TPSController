@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Axe
   image: {fileID: 0}
+  prefab: {fileID: 0}
   weaponType: 0
   weaponCatagory: 2

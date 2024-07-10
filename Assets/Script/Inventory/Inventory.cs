@@ -9,6 +9,7 @@ public class Inventory : MonoBehaviour
 
     private void Start(){
         InitVariables();
+
     }
     public void AddItem(Weapon newItem){
         //int newItemIndex = (int)newItem.weaponCatagory;

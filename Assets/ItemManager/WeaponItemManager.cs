@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class WeaponItemManager : MonoBehaviour
 {
+    public enum WeaponTypes
+    {
+        RIFLE, PISTOL, SWORD, AXE
+    }
+
+    [SerializeField]
+    private WeaponTypes weaponTypes;
+
     [SerializeField]
     public Items item;
 
@@ -45,28 +53,31 @@ public class WeaponItemManager : MonoBehaviour
         }
 
         SetWeapon();
+        DropWeapon();
     }
-    void SetWeapon(){
-        if(IsMeleeWeapon && owner.currentWeapon == null && owner.weaponType <= 0  && inventory.weapons[0].weaponType == Weapon.WeaponType.Melee){
-            equipped = true;
+    void SetWeapon() {
+        if(IsMeleeWeapon && owner.currentWeapon == null && inventory.weapons[0] != null && inventory.weapons[0].weaponType == Weapon.WeaponType.Axe){
             owner.currentWeapon = inventory.weapons[0].prefab;
-            owner.weaponType += 1;
-            Debug.Log("Weapon one Equiped");
         }
-        else if(IsMeleeWeapon && owner.currentWeapon == null && owner.weaponType <= 0 && inventory.weapons[1].weaponType == Weapon.WeaponType.Melee){
-            equipped = true;
+        else if(IsMeleeWeapon && owner.currentWeapon == null && inventory.weapons[0] != null && inventory.weapons[0].weaponType == Weapon.WeaponType.Sword){
+            owner.currentWeapon = inventory.weapons[0].prefab;
+        }
+
+        if(IsMeleeWeapon && owner.currentWeapon == null && inventory.weapons[1] != null && inventory.weapons[1].weaponType == Weapon.WeaponType.Axe){
             owner.currentWeapon = inventory.weapons[1].prefab;
-            owner.weaponType += 1;
-
-            Debug.Log("Weapon two Equiped");
         }
-        else if(IsMeleeWeapon && owner.currentWeapon == null && owner.weaponType <= 0 &&  inventory.weapons[2].weaponType == Weapon.WeaponType.Melee){
-            equipped = true;
+        else if(IsMeleeWeapon && owner.currentWeapon == null && inventory.weapons[1] != null && inventory.weapons[1].weaponType == Weapon.WeaponType.Sword){
+            owner.currentWeapon = inventory.weapons[1].prefab;
+        }
+
+
+        if(IsMeleeWeapon && owner.currentWeapon == null && inventory.weapons[2] != null && inventory.weapons[2].weaponType == Weapon.WeaponType.Axe){
             owner.currentWeapon = inventory.weapons[2].prefab;
-            owner.weaponType += 1;
-
-            Debug.Log("Weapon three Equiped");
         }
+        else if(IsMeleeWeapon && owner.currentWeapon == null && inventory.weapons[2] != null && inventory.weapons[2].weaponType == Weapon.WeaponType.Sword){
+            owner.currentWeapon = inventory.weapons[2].prefab;
+        }
+
     }
     void Equip(){
         if (!owner)
@@ -76,18 +87,21 @@ public class WeaponItemManager : MonoBehaviour
 
         if (IsProjectileWeapon){
             for(int i = 0; i < inventory.weapons.Length; i++){
-                if(inventory.weapons[i] != null && inventory.weapons[i].weaponType == Weapon.WeaponType.Pistol){
+                if(inventory.weapons[i] != null && inventory.weapons[i].weaponType == Weapon.WeaponType.Pistol  && weaponTypes == WeaponTypes.PISTOL){
                     myObject.transform.SetParent(owner.userSettings.EquipSpot[1]);
                     myObject.transform.position = owner.userSettings.EquipSpot[1].position;
                     myObject.transform.rotation = owner.userSettings.EquipSpot[1].rotation;
                     userSettings.equipedHand = true;
+                    Debug.Log("Equiped in Pistol");
                     break;
                 }
-                else if(inventory.weapons[i] != null && inventory.weapons[i].weaponType == Weapon.WeaponType.Rifle){
+                
+                if(inventory.weapons[i] != null && inventory.weapons[i].weaponType == Weapon.WeaponType.Rifle && weaponTypes == WeaponTypes.RIFLE){
                     myObject.transform.SetParent(owner.userSettings.EquipSpot[0]);
                     myObject.transform.position = owner.userSettings.EquipSpot[0].position;
                     myObject.transform.rotation = owner.userSettings.EquipSpot[0].rotation;
                     userSettings.equipedHand = true;
+                    Debug.Log("Equiped in Rifle");
                     break;
                 }
             }
@@ -95,7 +109,7 @@ public class WeaponItemManager : MonoBehaviour
 
         if(IsMeleeWeapon){
             for(int i=0; i < inventory.weapons.Length; i++){
-                if(inventory.weapons[i] != null && inventory.weapons[i].weaponType == Weapon.WeaponType.Melee){
+                if(inventory.weapons[i] != null && inventory.weapons[i].weaponCatagory == Weapon.WeaponCatagories.Melee){
                     myObject.transform.SetParent(owner.userSettings.EquipSpot[2]);
                     myObject.transform.position = owner.userSettings.EquipSpot[2].position;
                     myObject.transform.rotation = owner.userSettings.EquipSpot[2].rotation;
@@ -142,6 +156,8 @@ public class WeaponItemManager : MonoBehaviour
             myObject.GetComponent<Rigidbody>().useGravity = true;
             myObject.GetComponent<Rigidbody>().isKinematic = false;
             myObject.transform.SetParent(null);
+            userSettings.equipedHand = false;
+            owner.meleeMode = false;
             meleeWeapons_Properties.reCreate = true;
         }
 
@@ -153,21 +169,18 @@ public class WeaponItemManager : MonoBehaviour
     }
     
     IEnumerator OnReset_MeleeWeaponProperties(){
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.9f);
 
-        if(IsMeleeWeapon && inventory.weapons[0].name == "Axe"){
-
-            meleeWeapons_Properties.weaponBox.enabled = false;
-            myObject.GetComponent<Rigidbody>().useGravity = false;
-            myObject.GetComponent<Rigidbody>().isKinematic = true;
+        #region AxeTrigger Recreation
+        if (IsMeleeWeapon && weaponTypes == WeaponTypes.AXE){
 
             GameObject collectableObject = new GameObject("AxeCollectable");
-            collectableObject.transform.position = transform.position;
+            collectableObject.transform.position = myObject.transform.position;
             myObject.transform.parent = collectableObject.transform;
             BoxCollider Boxcollider = collectableObject.AddComponent<BoxCollider>();
 
-            Boxcollider.center = new Vector3(-0.13f, 0.62f, -0.08f);
-            Boxcollider.size = new Vector3(2.22f, 1.72f, 2.16f);
+            Boxcollider.center = new Vector3(0f, 0.06f, 0f);
+            Boxcollider.size = new Vector3(1.19f, 0.66f, 1.22f);
             Boxcollider.isTrigger = true;
             meleeWeapons_Properties.trigger = Boxcollider;
 
@@ -188,7 +201,55 @@ public class WeaponItemManager : MonoBehaviour
             triggerAction.MeleeWeapon = true;
             triggerAction.destroyDelay = 0.9f;
 
+            yield return new WaitForSeconds(0.3f);
+            meleeWeapons_Properties.weaponBox.enabled = false;
+            myObject.GetComponent<Rigidbody>().useGravity = false;
+            myObject.GetComponent<Rigidbody>().isKinematic = true;
+
             IsMeleeWeapon = false;
+        }
+        #endregion
+
+        #region SwordTrigger Recreate
+
+        else if (IsMeleeWeapon && weaponTypes == WeaponTypes.SWORD){
+            GameObject collectableObject = new GameObject("SwordCollectable");
+            collectableObject.transform.position = myObject.transform.position;
+            myObject.transform.parent = collectableObject.transform;
+            BoxCollider Boxcollider = collectableObject.AddComponent<BoxCollider>();
+
+            Boxcollider.center = new Vector3(0f, 0.06f, 0f);
+            Boxcollider.size = new Vector3(1.19f, 0.43f, 0.94f);
+            Boxcollider.isTrigger = true;
+            meleeWeapons_Properties.trigger = Boxcollider;
+
+
+            var triggerAction = collectableObject.AddComponent<TriggerGenericAction>();
+
+            triggerAction.autoAction = false;
+            triggerAction.disableCollision = false;
+            triggerAction.disableGravity = false;
+            triggerAction.resetPlayerSettings = false;
+            triggerAction.playAnimation = "Pick_Down";
+            triggerAction.endExitTimeAnimation = 0.8f;
+            triggerAction.avatarTarget = AvatarTarget.RightHand;
+            triggerAction.activeFromForward = false;
+            triggerAction.useTriggerRotation = false;
+            triggerAction.destroyAfter = true;
+            triggerAction.isWeapon = true;
+            triggerAction.MeleeWeapon = true;
+            triggerAction.destroyDelay = 0.9f;
+
+            yield return new WaitForSeconds(0.3f);
+            meleeWeapons_Properties.weaponBox.enabled = false;
+            myObject.GetComponent<Rigidbody>().useGravity = false;
+            myObject.GetComponent<Rigidbody>().isKinematic = true;
+
+            IsMeleeWeapon = false;
+        }
+        #endregion
+        else{
+            Debug.Log("Non");
         }
     }
 }

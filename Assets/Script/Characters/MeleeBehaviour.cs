@@ -30,13 +30,15 @@ public class MeleeBehaviour : GenericBehaviour
     public bool fistStrafe;
 
     [SerializeField]
-    public Vector3 meleePivotOffset = new Vector3(0, 1, 0);
-    public Vector3 meleeCamOffset = new Vector3(0.7f, 0.3f, -0.8f);
+    public Vector3 meleeArmed_PivotOffset = new Vector3(0, 1, 0);
+    public Vector3 meleeArmed_CamOffset = new Vector3(0.7f, 0.3f, -0.8f);
+    public Vector3 meleeUnArmed_PivotOffset = new Vector3(0, 1, 0);
+    public Vector3 meleeUnArmed_CamOffset = new Vector3(0.7f, 0.3f, -0.8f);
     public Vector2 vectorInput;
     public float lookDistance = 30.0f;
     public float turnSpeed;
     public float speed, direction;
-    public bool meleeMode, spearMode, fistMode, canAttack;
+    public bool meleeMode, combatMode, fistMode, canAttack;
     public int attackid, randMin, randMax;
 
     public Collider[] hitboxs;
@@ -53,47 +55,48 @@ public class MeleeBehaviour : GenericBehaviour
         SetUpAnimator();
         AttackInput();
         Attack();
+        Animate(Input.GetAxis(UserInput.Instance.input.verticalAxis), Input.GetAxis(UserInput.Instance.input.horizontalAxis));
     }
 
     #region AnimatorSetup
     void SetUpAnimator(){
-        if(WeaponHandler.Instance.axeMode && !meleeMode){
-            StartCoroutine(ToggleMeleeOn());
+        if(WeaponHandler.Instance.meleeMode && !meleeMode){
+           StartCoroutine(ToggleUnarmedOn());
         }
-        else if(meleeMode && WeaponHandler.Instance.axeMode != true){
-            StartCoroutine(ToggleMeleeOff());
-        }
-
-        if(WeaponHandler.Instance.fistMode && !fistMode){
-            StartCoroutine(ToggleFistOn());
-        }
-        else if(fistMode && WeaponHandler.Instance.fistMode != true){
-            StartCoroutine(ToggleFistOff());
+        else if(meleeMode && WeaponHandler.Instance.meleeMode != true){
+           StartCoroutine(ToggleUnarmedOff());
         }
 
-
-        if(fistStrafe){
-            behaviourController.GetAnimator.SetBool(unarmedStrafe, fistStrafe);
+        if(WeaponHandler.Instance.pistolMode && !fistMode){
+            //StartCoroutine(ToggleFistOn());
         }
-        else if(!fistStrafe){
-            behaviourController.GetAnimator.SetBool(unarmedStrafe, fistStrafe);
+        else if(fistMode && WeaponHandler.Instance.pistolMode != true){
+           // StartCoroutine(ToggleFistOff());
         }
 
 
-        if(MacheteStrafe){
-            behaviourController.GetAnimator.SetBool(macheteStrafe, MacheteStrafe);
-        }
-        else if(!MacheteStrafe){
-            behaviourController.GetAnimator.SetBool(macheteStrafe, MacheteStrafe);
-        }
+        //if(fistStrafe){
+        //    behaviourController.GetAnimator.SetBool(unarmedStrafe, fistStrafe);
+        //}
+        //else if(!fistStrafe){
+        //    behaviourController.GetAnimator.SetBool(unarmedStrafe, fistStrafe);
+        //}
 
 
-        if(SpearStrafe){
-            behaviourController.GetAnimator.SetBool(spearStrafe, SpearStrafe);
-        }
-        else if(!SpearStrafe){
-            behaviourController.GetAnimator.SetBool(spearStrafe, SpearStrafe);
-        }
+        //if(MacheteStrafe){
+        //    behaviourController.GetAnimator.SetBool(macheteStrafe, MacheteStrafe);
+        //}
+        //else if(!MacheteStrafe){
+        //    behaviourController.GetAnimator.SetBool(macheteStrafe, MacheteStrafe);
+        //}
+
+
+        //if(SpearStrafe){
+        //    behaviourController.GetAnimator.SetBool(spearStrafe, SpearStrafe);
+        //}
+        //else if(!SpearStrafe){
+        //    behaviourController.GetAnimator.SetBool(spearStrafe, SpearStrafe);
+        //}
     }
 
     private IEnumerator ToggleMeleeOn() {
@@ -103,48 +106,28 @@ public class MeleeBehaviour : GenericBehaviour
             yield return false;
 
         else {
+            //meleeMode = true;
+           // MacheteStrafe = true;
+            int signal = 1;
+            meleeArmed_CamOffset.x = Mathf.Abs(meleeArmed_CamOffset.x) * signal;
+            meleeArmed_PivotOffset.x = Mathf.Abs(meleeArmed_PivotOffset.x) * signal;
+            yield return new WaitForSeconds(0.1f);
+            behaviourController.GetAnimator.SetFloat(SpeedFloat, 0);
+            behaviourController.OverrideWithBehaviour(this);
+        }
+    }
+
+    private IEnumerator ToggleUnarmedOn(){
+        yield return new WaitForSeconds(0.05f);
+
+        if (behaviourController.GetTempLockStatus(this.behaviourCode) || behaviourController.IsOverriding(this))
+            yield return false;
+
+        else{
             meleeMode = true;
-            MacheteStrafe = true;
             int signal = 1;
-            meleeCamOffset.x = Mathf.Abs(meleeCamOffset.x) * signal;
-            meleePivotOffset.x = Mathf.Abs(meleePivotOffset.x) * signal;
-            yield return new WaitForSeconds(0.1f);
-            behaviourController.GetAnimator.SetFloat(SpeedFloat, 0);
-            behaviourController.OverrideWithBehaviour(this);
-        }
-    }
-
-    private IEnumerator ToggleSpearOn(){
-        yield return new WaitForSeconds(0.05f);
-
-        if (behaviourController.GetTempLockStatus(this.behaviourCode) || behaviourController.IsOverriding(this))
-            yield return false;
-
-        else{
-
-            spearMode = true;
-            SpearStrafe = true;
-            int signal = 1;
-            meleeCamOffset.x = Mathf.Abs(meleeCamOffset.x) * signal;
-            meleePivotOffset.x = Mathf.Abs(meleePivotOffset.x) * signal;
-            yield return new WaitForSeconds(0.1f);
-            behaviourController.GetAnimator.SetFloat(SpeedFloat, 0);
-            behaviourController.OverrideWithBehaviour(this);
-        }
-    }
-
-    private IEnumerator ToggleFistOn(){
-        yield return new WaitForSeconds(0.05f);
-
-        if (behaviourController.GetTempLockStatus(this.behaviourCode) || behaviourController.IsOverriding(this))
-            yield return false;
-        else{
-
-            fistMode = true;
-            fistStrafe = true;
-            int signal = 1;
-            meleeCamOffset.x = Mathf.Abs(meleeCamOffset.x) * signal;
-            meleePivotOffset.x = Mathf.Abs(meleePivotOffset.x) * signal;
+            meleeArmed_CamOffset.x = Mathf.Abs(meleeUnArmed_CamOffset.x) * signal;
+            meleeArmed_PivotOffset.x = Mathf.Abs(meleeUnArmed_PivotOffset.x) * signal;
             yield return new WaitForSeconds(0.1f);
             behaviourController.GetAnimator.SetFloat(SpeedFloat, 0);
             behaviourController.OverrideWithBehaviour(this);
@@ -153,8 +136,18 @@ public class MeleeBehaviour : GenericBehaviour
 
     private IEnumerator ToggleMeleeOff(){
 
+       // meleeMode = false;
+       // MacheteStrafe = false;
+        yield return new WaitForSeconds(0.3f);
+        behaviourController.GetCameraRig.ResetTargetOffsets();
+        behaviourController.GetCameraRig.ResetMaxVerticalAngle();
+        yield return new WaitForSeconds(0.05f);
+        behaviourController.RevokeOverridingBehaviour(this);
+    }
+
+    private IEnumerator ToggleUnarmedOff(){
+
         meleeMode = false;
-        MacheteStrafe = false;
         yield return new WaitForSeconds(0.3f);
         behaviourController.GetCameraRig.ResetTargetOffsets();
         behaviourController.GetCameraRig.ResetMaxVerticalAngle();
@@ -162,42 +155,21 @@ public class MeleeBehaviour : GenericBehaviour
         behaviourController.RevokeOverridingBehaviour(this);
     }
 
-    private IEnumerator ToggleSpearOff(){
+    void Animate(float vertical, float horizontal){
+        behaviourController.animator.SetFloat(VerticalVelocity, vertical);
+        behaviourController.animator.SetFloat(HorizontalVelocity,horizontal);
 
-        spearMode = false;
-        SpearStrafe = false;
-        yield return new WaitForSeconds(0.3f);
-        behaviourController.GetCameraRig.ResetTargetOffsets();
-        behaviourController.GetCameraRig.ResetMaxVerticalAngle();
-        yield return new WaitForSeconds(0.05f);
-        behaviourController.RevokeOverridingBehaviour(this);
-    }
-
-    private IEnumerator ToggleFistOff(){
-
-        yield return new WaitForSeconds(0.3f);
-        fistMode = false;
-        fistStrafe = false;
-        yield return new WaitForSeconds(0.3f);
-        behaviourController.GetCameraRig.ResetTargetOffsets();
-        behaviourController.GetCameraRig.ResetMaxVerticalAngle();
-        yield return new WaitForSeconds(0.05f);
-        behaviourController.RevokeOverridingBehaviour(this);
-    }
-
-    void Animate(){
-        var limitInput = 1f;
-        var _input = vectorInput * limitInput;
-        var _speed = Mathf.Clamp(_input.y, -limitInput, limitInput);
-        var _direction = Mathf.Clamp(_input.x, -limitInput, limitInput);
-        speed = _speed;
-        direction = _direction;
-        var newInput = new Vector2(speed, direction);
-
+        if(horizontal != 0 || vertical != 0){
+            MacheteStrafe = true;
+            behaviourController.animator.SetBool(macheteStrafe, MacheteStrafe);
+        }else{
+            MacheteStrafe = false;
+            behaviourController.animator.SetBool(macheteStrafe, MacheteStrafe);
+        }
     }
     public override void LocalFixedUpdate() {
-        if (WeaponHandler.Instance.axeMode || WeaponHandler.Instance.fistMode){
-            behaviourController.GetCameraRig.SetTargetOffsets(meleePivotOffset, meleeCamOffset);
+        if (WeaponHandler.Instance.meleeMode || WeaponHandler.Instance.pistolMode){
+            behaviourController.GetCameraRig.SetTargetOffsets(meleeUnArmed_PivotOffset, meleeUnArmed_CamOffset);
         }
         
         if(behaviourController.IsMoving()){
@@ -306,15 +278,15 @@ public class MeleeBehaviour : GenericBehaviour
     }
 
     void RandAttack(int min, int max){
-        if(states.combat == CharacterStates.CombatStates.Unarmed){
-            attackid = Random.Range(min, max);
-        }
-        else if(states.combat == CharacterStates.CombatStates.Axe){
-            attackid = Random.Range(5, 7);
-        }
-        if(states.combat == CharacterStates.CombatStates.Spear){
-            attackid = Random.Range(8, 10);
-        }
+        //if(states.combat == CharacterStates.CombatStates.Unarmed){
+        //    attackid = Random.Range(min, max);
+        //}
+        //else if(states.combat == CharacterStates.CombatStates.Axe){
+        //    attackid = Random.Range(5, 7);
+        //}
+        //if(states.combat == CharacterStates.CombatStates.Spear){
+        //    attackid = Random.Range(8, 10);
+        //}
     }
 
     public void ResetAttack(){
