@@ -223,12 +223,13 @@ public class GenericAction : MonoBehaviour
 
         //var dist = Vector3.Distance(transform.forward, _triggerAction.transform.forward);
 
-        if(IsInForward(_triggerAction.transform)){
+        triggerAction = _triggerAction;
+        canTriggerAction = true;
+        Ismatching = true;
+        //Debug.Log("matchtargeting");
+        if (IsInForward(_triggerAction.transform)){
 
-            triggerAction = _triggerAction;
-            canTriggerAction = true;
-            Ismatching = true;
-            Debug.Log("matchtargeting");
+  
             //triggerAction.OnPlayerEnter.Invoke();
         }else{
 

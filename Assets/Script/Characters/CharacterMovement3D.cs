@@ -13,6 +13,7 @@ public class CharacterMovement3D : GenericBehaviour
     public string crouchTag = "AutoCrouch";
     public string groundedBool = "IsGrounded";
     public string distanceFloat = "GroundDistance";
+    public string VerticalVelocity = "VerticalVelocity";
     public bool isCrouch, isClimb, isClimbing;
 
     [SerializeField]
@@ -27,6 +28,12 @@ public class CharacterMovement3D : GenericBehaviour
     public float speeDampTime;
     public float speedSeeker;
     public float moveSpeed;
+    public float jumpTimer = 0.3f;
+    public float jumpCounter;
+    public float jumpForward = 3f;
+    public float jumpHeight = 4f;
+    public float jumpMultiplier = 1;
+    public float timeToResetJumpMultiplier;
 
 
     void Start(){
@@ -62,6 +69,48 @@ public class CharacterMovement3D : GenericBehaviour
 
         behaviourController.mybody.velocity = targetDirection * moveSpeed;
 
+    }
+
+    protected virtual void ControlJumpBehaviour(){
+        if (!behaviourController.isJumping) return;
+
+        jumpCounter -= Time.deltaTime;
+        if(jumpCounter <= 0){
+            jumpCounter = 0;
+            behaviourController.isJumping = false;
+        }
+        // apply extra force to the jump height   
+        var vel = behaviourController.mybody.velocity;
+        vel.y = jumpHeight * jumpMultiplier;
+        behaviourController.mybody.velocity = vel;
+    }
+
+    public virtual void SetJumpMultiplier(float jumpMultiplier, float timeToReset = 1f){
+        this.jumpMultiplier = jumpMultiplier;
+        if(timeToResetJumpMultiplier <= 0){
+            timeToResetJumpMultiplier = timeToReset;
+            StartCoroutine(ResetJumpMultiplierRoutine());
+        }
+        else timeToResetJumpMultiplier = timeToReset;
+    }
+
+    public virtual void ResetJumpMultiplier(){
+        StopCoroutine("ResetJumpMultiplierRoutine");
+        timeToResetJumpMultiplier = 0;
+        jumpMultiplier = 1;
+    }
+
+    protected IEnumerator ResetJumpMultiplierRoutine(){
+
+        while(timeToResetJumpMultiplier > 0 && jumpMultiplier != 1){
+            timeToResetJumpMultiplier -= Time.deltaTime;
+            yield return null;
+        }
+        jumpMultiplier = 1;
+    }
+
+    void Jump(){
+        if (behaviourController.customAction || behaviourController.GroundAngle() > behaviourController.slopeLimit) return;
     }
     #region Animations
     public void Animate(float horizontal, float vertical){

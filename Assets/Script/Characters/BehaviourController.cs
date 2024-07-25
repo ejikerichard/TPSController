@@ -40,6 +40,7 @@ public class BehaviourController : MonoBehaviour
     public bool isRolling;
     public bool customAction;
     public bool isShooting;
+    public bool isJumping;
     public bool lockOn;
 
 
@@ -110,6 +111,8 @@ public class BehaviourController : MonoBehaviour
         for(int i =0; i < AllColliders.Length; i++){
             Physics.IgnoreCollision(capsuleCollider, AllColliders[i]);
         }
+
+        isGrounded = true;
     }
 
     void Update(){
@@ -189,18 +192,6 @@ public class BehaviourController : MonoBehaviour
         if(customAction){
           //  Debug.Log("ClimbUp");
         }
-
-        //if(WeaponHandler.Instance.isAiming){
-        //    if(isShooting){
-        //        Bow.Instance.arrow.SetActive(false);
-        //    }
-        //    else if(!isShooting){
-        //        Bow.Instance.arrow.SetActive(true);
-        //    }
-        //}
-        //else if(!WeaponHandler.Instance.isAiming){
-        //    Bow.Instance.arrow.SetActive(false);
-        //}
     }
 
     public void CheckGround(){
@@ -270,6 +261,15 @@ public class BehaviourController : MonoBehaviour
     public virtual float GroundAngle(){
         var groundAngle = Vector3.Angle(groundHit.normal, Vector3.up);
         return groundAngle;
+    }
+    public virtual bool jumpFwdCondition
+    {
+        get
+        {
+            Vector3 p1 = transform.position + capsuleCollider.center + Vector3.up * capsuleCollider.height * 0.5F;
+            Vector3 p2 = p1 + Vector3.up * capsuleCollider.height;
+            return Physics.CapsuleCastAll(p1, p2, capsuleCollider.radius * 0.5f, transform.forward, 0.6f, groundLayer).Length == 0;
+        }
     }
 
     public void SubscribeBehaviour(GenericBehaviour behaviour)
