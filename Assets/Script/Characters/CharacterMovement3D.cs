@@ -46,11 +46,18 @@ public class CharacterMovement3D : GenericBehaviour
         states = GetComponent<CharacterStates>();
 
         speedSeeker = runSpeed;
+
+        ResetJumpMultiplier();
+
     }
     public override void LocalFixedUpdate(){
 
         Animate(behaviourController.GetH, behaviourController.GetV);
-        GroundCheck();
+
+        ControlJumpBehaviour();
+
+        if(Input.GetKeyDown(UserInput.Instance.input.SpaceButton))
+            Jump();
 
         //Move(Input.GetAxis(UserInput.Instance.input.verticalAxis), Input.GetAxis(UserInput.Instance.input.horizontalAxis));
     }
@@ -71,11 +78,12 @@ public class CharacterMovement3D : GenericBehaviour
 
     }
 
-    protected virtual void ControlJumpBehaviour(){
+     void ControlJumpBehaviour(){
         if (!behaviourController.isJumping) return;
 
         jumpCounter -= Time.deltaTime;
-        if(jumpCounter <= 0){
+        if (jumpCounter <= 0)
+        {
             jumpCounter = 0;
             behaviourController.isJumping = false;
         }
@@ -111,6 +119,14 @@ public class CharacterMovement3D : GenericBehaviour
 
     void Jump(){
         if (behaviourController.customAction || behaviourController.GroundAngle() > behaviourController.slopeLimit) return;
+
+        bool jumpConditions = behaviourController.isGrounded && !behaviourController.isJumping;
+
+        if (!jumpConditions) return;
+
+        jumpCounter = jumpTimer;
+        behaviourController.isJumping = true;
+        behaviourController.animator.CrossFadeInFixedTime("Jump", 0.1f);
     }
     #region Animations
     public void Animate(float horizontal, float vertical){
@@ -150,19 +166,12 @@ public class CharacterMovement3D : GenericBehaviour
             behaviourController.GetCameraRig.ResetTargetOffsets();
             behaviourController.GetCameraRig.ResetMaxVerticalAngle();
         }
-    }
 
-    void GroundCheck(){
-        //if(behaviourController.customAction != true){
-        //    behaviourController.GetAnimator.SetFloat(distanceFloat, behaviourController.groundDistance);
-        //}
+        if (!behaviourController.isGrounded)
+            behaviourController.animator.SetFloat(VerticalVelocity, behaviourController.verticalVelocity);
 
-        //if(behaviourController.isGrounded && behaviourController.customAction != true){
-        //    behaviourController.GetAnimator.SetBool(groundedBool, behaviourController.isGrounded);
-        //}
-        //else if(!behaviourController.isGrounded && behaviourController.customAction != true){
-        //    behaviourController.GetAnimator.SetBool(groundedBool, behaviourController.isGrounded);
-        //}
+        behaviourController.animator.SetBool(groundedBool, behaviourController.isGrounded);
+        behaviourController.animator.SetFloat(distanceFloat, behaviourController.groundDistance);
     }
     #endregion
 

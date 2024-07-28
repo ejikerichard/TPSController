@@ -26,6 +26,7 @@ public class UserInput : MonoBehaviour
         public int mouseButtonTwo = 2;
         public KeyCode switchButton = KeyCode.E;
         public KeyCode dropButton = KeyCode.Q;
+        public KeyCode SpaceButton = KeyCode.Space;
     }
 
     [SerializeField]

@@ -2917,7 +2917,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6923427781283671000}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 50
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -2935,7 +2935,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &4449284416609872669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2973,6 +2973,7 @@ MonoBehaviour:
     mouseButtonTwo: 2
     switchButton: 101
     dropButton: 113
+    SpaceButton: 32
   OnLateUpdate:
     m_PersistentCalls:
       m_Calls:
@@ -3018,7 +3019,7 @@ MonoBehaviour:
   overridingbehaviours: []
   mybody: {fileID: 0}
   capsuleCollider: {fileID: 0}
-  groundCheckMethod: 0
+  groundCheckMethod: 1
   groundLayer:
     serializedVersion: 2
     m_Bits: 1
@@ -3028,10 +3029,14 @@ MonoBehaviour:
   isRolling: 0
   customAction: 0
   isShooting: 0
+  isJumping: 0
   lockOn: 0
   groundDistance: 0
+  groundMinDistance: 0.25
+  groundMaxDistance: 0.5
   slopeLimit: 75
   speed: 0.5
+  verticalVelocity: 0
 --- !u!114 &4449284416609872666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3052,6 +3057,7 @@ MonoBehaviour:
   crouchTag: AutoCrouch
   groundedBool: IsGrounded
   distanceFloat: GroundDistance
+  VerticalVelocity: VerticalVelocity
   isCrouch: 0
   isClimb: 0
   isClimbing: 0
@@ -3064,6 +3070,12 @@ MonoBehaviour:
   speeDampTime: 0.1
   speedSeeker: 0
   moveSpeed: 3
+  jumpTimer: 0.3
+  jumpCounter: 0
+  jumpForward: 3
+  jumpHeight: 4
+  jumpMultiplier: 1
+  timeToResetJumpMultiplier: 0
 --- !u!114 &4449284416609872665
 MonoBehaviour:
   m_ObjectHideFlags: 0

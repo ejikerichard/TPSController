@@ -682,6 +682,19 @@ public class WeaponHandler : MonoBehaviour
             pistolMode = false;
             rifleMode = false;
         }
+        else if(currentWeapon != null && currentWeapon.name == inventory.weapons[2].name)
+        {
+            currentWeapon.GetComponent<WeaponItemManager>().equipped = false;
+            currentWeapon = null;
+            pistolMode = false;
+            rifleMode = false;
+        }
+        else if(currentWeapon != null && currentWeapon.name == inventory.weapons[3].name){
+            currentWeapon.GetComponent<WeaponItemManager>().equipped = false;
+            currentWeapon = null;
+            pistolMode = false;
+            rifleMode = false;
+        }
     }
     #endregion
 

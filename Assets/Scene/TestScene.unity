@@ -2018,7 +2018,7 @@ MonoBehaviour:
   startMatchTarget: 0
   endMatchTarget: 0.3
   activeFromForward: 1
-  useTriggerRotation: 0
+  useTriggerRotation: 1
   destroyAfter: 0
   isWeapon: 0
   ProjectileWeapon: 0
@@ -7557,7 +7557,7 @@ MonoBehaviour:
   startMatchTarget: 0
   endMatchTarget: 0.3
   activeFromForward: 1
-  useTriggerRotation: 0
+  useTriggerRotation: 1
   destroyAfter: 0
   isWeapon: 0
   ProjectileWeapon: 0
@@ -10584,7 +10584,7 @@ MonoBehaviour:
   startMatchTarget: 0
   endMatchTarget: 0.3
   activeFromForward: 1
-  useTriggerRotation: 0
+  useTriggerRotation: 1
   destroyAfter: 0
   isWeapon: 0
   ProjectileWeapon: 0
@@ -10686,7 +10686,7 @@ MonoBehaviour:
   startMatchTarget: 0
   endMatchTarget: 0.3
   activeFromForward: 1
-  useTriggerRotation: 0
+  useTriggerRotation: 1
   destroyAfter: 0
   isWeapon: 0
   ProjectileWeapon: 0
@@ -14583,8 +14583,11 @@ MonoBehaviour:
   isJumping: 0
   lockOn: 0
   groundDistance: 0
+  groundMinDistance: 0.25
+  groundMaxDistance: 0.5
   slopeLimit: 75
   speed: 0.5
+  verticalVelocity: 0
 --- !u!114 &114324791918305562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14621,6 +14624,7 @@ MonoBehaviour:
     mouseButtonTwo: 2
     switchButton: 101
     dropButton: 113
+    SpaceButton: 32
   OnLateUpdate:
     m_PersistentCalls:
       m_Calls:

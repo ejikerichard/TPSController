@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BehaviourController : MonoBehaviour
@@ -45,10 +46,11 @@ public class BehaviourController : MonoBehaviour
 
 
     public float groundDistance;
-    protected float groundMinDistance = 0.25f;
-    protected float groundMaxDistance = 0.5f;
+    public float groundMinDistance = 0.25f;
+    public float groundMaxDistance = 0.5f;
     public float slopeLimit = 75f;
     public float speed;
+    public float verticalVelocity;
     public RaycastHit groundHit;
 
     internal AnimatorStateInfo baseLayerInfo, underBodyInfo, upperBodyInfo, rightArmInfo, leftArmInfo, shotBodyInfo;
@@ -200,6 +202,7 @@ public class BehaviourController : MonoBehaviour
 
         if(customAction){
             isGrounded = true;
+            return;
         }
 
         capsuleCollider.material = (isGrounded && GroundAngle() <= slopeLimit + 1) ? frictionPhysics : slippyPhysics;
@@ -228,6 +231,8 @@ public class BehaviourController : MonoBehaviour
             {
                 if(groundDistance >= groundCheckDistance){
                     isGrounded = false;
+
+                    verticalVelocity = mybody.velocity.y;
                 }
             }
         }
